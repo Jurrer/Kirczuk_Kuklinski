@@ -1,8 +1,14 @@
-all:
-	cc iCzolg.c -lcurl --pedantic -Wall
+DEPS=iCzolg.o
 
-run:a.out
-	./a.out
+iCzolg: $(DEPS)
+	cc $^ -o $@ --pedantic -Wall
+
+%.o:%.c
+	cc -c $^ -o $@
+
+run:iCzolg
+	./iCzolg
 
 clean:
-	rm -f a.out
+	rm -f iCzolg
+	rm -f *.o
