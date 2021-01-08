@@ -1,0 +1,22 @@
+{
+    "status": "Success",
+    "payload": {
+        "list": [
+        {
+            "x": 6, 
+            "y": 9, 
+            "type": "grass"
+        },
+        {
+            "x": 7, 
+            "y": 9, 
+            "type": "wall"
+        },
+        {
+            "x": 8, 
+            "y": 9, 
+            "type": "wall"
+        }
+        ]
+    }
+}
