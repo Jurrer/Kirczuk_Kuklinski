@@ -7,7 +7,7 @@ iCzolg: $(DEPS)
 	cc -c $^ -o $@
 
 run:iCzolg
-	./iCzolg
+	./iCzolg ../cJSON/cJSON.o
 
 clean:
 	rm -f iCzolg
