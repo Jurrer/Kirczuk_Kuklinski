@@ -101,7 +101,6 @@ char *make_request(char *url)
             //printf("%s", chunk.response); /*informacja zwrotna z serwera*/
             fprintf(fin, "%s", chunk.response);
             fclose(fin);
-            // printf("alamakota\n");
         }
 
         /* zawsze po sobie sprzątaj */
@@ -114,29 +113,40 @@ char *make_request(char *url)
 void info(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
     strcat(url, token);
-    //puts(url);
-    printf("%s\n", url);
+    //printf("%s\n", url);
     make_request(url);
 
 }
 
 void move(const char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/qwerty_25";
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/";
+    strcat(url, token);
+    
     make_request(url);
 }
 
 void explore(const char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/qwerty_25";
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/";
+    strcat(url, token);
     make_request(url);
 }
 
 void left(const char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/qwerty_25/left";
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
+    strcat(url, token);
+    const char *left = "/left";
+    strcat(url, left);
+    printf("%s\n", url);
     make_request(url);
 }
 
 void right(const char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/qwerty_25/right";
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
+    make_request(url);
+    strcat(url, token);
+    const char *right = "/right";
+    strcat(url, right);
+    printf("%s\n", url);
     make_request(url);
 }
 
