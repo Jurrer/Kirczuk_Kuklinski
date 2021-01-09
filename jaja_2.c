@@ -20,7 +20,6 @@ typedef struct _Mapa {
     int step;
     char *field_type;
     char *field_bonus;
-
 }Mapa;
 
 typedef struct _Luneta {
@@ -97,23 +96,27 @@ char *make_request(char *url)
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
         else {
+            
+            /*
             FILE *fin = fopen("reply.cjson", "w+");
-            //printf("%s", chunk.response); /*informacja zwrotna z serwera*/
+            //printf("%s", chunk.response); /*informacja zwrotna z serwera
             fprintf(fin, "%s", chunk.response);
             fclose(fin);
+            */
             // printf("alamakota\n");
         }
 
         /* zawsze po sobie sprzątaj */
-        free(chunk.response);
-        curl_easy_cleanup(curl);
+        //free(chunk.response);
+        //curl_easy_cleanup(curl);
     }
-    return 0;
+    return chunk.response;
 }
 
 void info(char *token) {
     char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/qwerty_25";
-    make_request(url);
+    char *test = make_request(url);
+    printf("%s", test);
 }
 
 void move(char *token) {
@@ -269,9 +272,9 @@ void wypisz (Mapa *mapa)
 
 int main(int argc, char **argv)
 {
-    char *token= argv[1];
-
-    for(int i=2; i<argc;i++)
+    char *token= argv[0];
+    
+    for(int i=1; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)
         {

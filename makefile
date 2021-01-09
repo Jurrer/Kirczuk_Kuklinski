@@ -1,7 +1,7 @@
 DEPS=iCzolg.o ../cJSON/cJSON.o
 
 iCzolg: $(DEPS)
-	cc $^ -o $@ --pedantic -Wall
+	cc $(DEPS) -o $@ -Wall --pedantic
 
 %.o:%.c
 	cc -c $^ -o $@
