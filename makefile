@@ -1,4 +1,4 @@
-DEPS=iCzolg.o
+DEPS=iCzolg.o ../cJSON/cJSON.o
 
 iCzolg: $(DEPS)
 	cc $^ -o $@ --pedantic -Wall
