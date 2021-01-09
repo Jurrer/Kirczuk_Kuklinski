@@ -3,8 +3,9 @@
 #include <string.h>
 #include "../cJSON/cJSON.h"
 
-struct payload
+typedef struct _payload
 {
+    int error;
     char *name;
     int current_x;
     int current_y;
@@ -26,7 +27,7 @@ struct payload
     int list_y_3;
     char type_3[10];
 
-};
+}payload;
 
  //return 1 if the monitor supports full hd, 0 otherwise 
 /*
@@ -95,36 +96,55 @@ int status(const char * const bufor)
 }
 */
 
-int zczytaj_payload(const char * const bufor, char *komenda, struct payload *data)
+payload *zczytaj_payload(const char * const bufor, char *komenda)
 {
-    const cJSON *name = NULL;
-    const cJSON *current_x = NULL;
-    const cJSON *current_y = NULL;
-    const cJSON *current_session = NULL;
-    const cJSON *direction = NULL;
-    const cJSON *step = NULL;
-    const cJSON *field_type = NULL;
-    const cJSON *field_bonus = NULL;
-    const cJSON *list = NULL;
-    const cJSON *payload = NULL;
+    const cJSON *name_ = NULL;
+    const cJSON *current_x_ = NULL;
+    const cJSON *current_y_ = NULL;
+    const cJSON *current_session_ = NULL;
+    const cJSON *direction_ = NULL;
+    const cJSON *step_ = NULL;
+    const cJSON *field_type_ = NULL;
+    const cJSON *field_bonus_ = NULL;
+    const cJSON *list_ = NULL;
+    const cJSON *payload_ = NULL;
 
     int status = 0;
 
+    payload *tymczasowo;
+
     cJSON *haczyk = cJSON_Parse(bufor);
         if(haczyk == NULL)
-            return 1;
-    
-    
-    name = cJSON_GetObjectItemCaseSensitive(haczyk, "name");
+        {
+        tymczasowo->error = 1;
+        return tymczasowo;
+        }    
+
+    payload_ = cJSON_GetObjectItemCaseSensitive(haczyk, "payload");
+    cJSON_ArrayForEach(list_, payload_)
+    {
+    cJSON * name_ = cJSON_GetObjectItemCaseSensitive(payload_, "name");
+    printf("checking %s \n", name_->valuestring);
+    tymczasowo->error = 0;
+    //tymczasowo->name = name_->valuestring;
+/*
+    cJSON * current_x_ = cJSON_GetObjectItemCaseSensitive(payload_, "current_x");
+    tymczasowo->current_x = current_x_->valueint;
+    printf("%d", tymczasowo->current_x);
+    */
+
+    return tymczasowo;
+    }
 
     //strcpy((*data)->name, name->valuestring);
-    printf("pierwsze %s", data->name);
-    printf("drugie %s", name->valuestring);
+    //printf("pierwsze %s", data->name);
+    //printf("drugie %s", name_->valuestring);
+
+    
 
     //current_x = cJSON_GetObjectItemCaseSensitive(haczyk, "current_x");
     //payload = cJSON_GetObjectItemCaseSensitive(haczyk, "payload");
     
-    return 0;
 /*
     if(strcmp(komenda, "info") == 0 || strcmp(komenda, "right") == 0 || strcmp(komenda, "left") == 0)
     {
@@ -138,25 +158,31 @@ int zczytaj_payload(const char * const bufor, char *komenda, struct payload *dat
 }
 
 int main() {
+
 	char buffer[2048];
 	FILE *f = fopen("info.json", "r");
 	fread(buffer,1,2048,f);
-	fclose(f);
+	
 	//printf("%d\n",status(buffer));
-    int i,j;
     
-    struct payload *payload_pointer, data;
+    
+    payload * data = zczytaj_payload(buffer, "info");
+
+    printf("%s", data->name);
 
     //data = (payload_global) malloc(sizeof(pld));    
-    printf("%p", payload_pointer);
-    if(zczytaj_payload(buffer, "info", payload_pointer) == 0)
+    fclose(f);
+
+    if(data->error == 0)
     {	
     printf("działa\n");
 	return 0;
     }
-    else if(zczytaj_payload(buffer, "info", payload_pointer) == 1)
+    else if(data->error != 0)
     {
     printf("nie działa\n");
     return 1;
     }
+
+    return 0;
 }
