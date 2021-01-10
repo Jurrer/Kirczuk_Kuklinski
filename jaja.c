@@ -33,6 +33,36 @@ typedef struct _Mapa {
 
 char swiat[50][50];
 
+void wczytaj_zapis()
+{
+    FILE *f; 
+    f = fopen("save.txt", "w+");
+    for(int i=0; i<50; i++)
+    {
+        for(int j =0; j<50;j++)
+        {
+            fscanf(f, "%c", swiat[j][50-i]);
+        }
+    }
+    fclose(f);
+    system("rm save.txt");
+}
+
+void zapisz()
+{
+    FILE *fin;
+    fin = fopen("save.txt", "w");
+    for(int i=0; i<50; i++)
+    {
+        for(int j =0; j<50;j++)
+        {
+            fprintf(fin, "%c", swiat[j][50-i]);
+        }
+        fprintf(fin, "\n");
+    }
+    fclose(fin);
+}
+
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
     /* to jest rzeczywista liczba bajtów przekazanych przez curl */
@@ -292,15 +322,15 @@ void wpisz(char *response, char *komenda)
             swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
         }
     }
-FILE *f = fopen("save.txt", "w");
-for (int i = 0; i<50; i++)
-    {
-        for(int j = 0; j<50; j++)
-        {
-            fprintf(f,"%c", swiat[i][j]);
-        }
-        printf("\n");
-    }
+// FILE *f = fopen("save.txt", "w");
+// for (int i = 0; i<50; i++)
+//     {
+//         for(int j = 0; j<50; j++)
+//         {
+//             fprintf(f,"%c", swiat[i][j]);
+//         }
+//         printf("\n");
+//     }
 
 }
 
@@ -329,7 +359,6 @@ void wyzeruj()
     }
 }
 
-
 void wypisz(Mapa *mapa, char *komenda)
 {
     if(strcmp(komenda, "explore") == 0)
@@ -357,17 +386,11 @@ void wypisz(Mapa *mapa, char *komenda)
 
 int main(int argc, char **argv)
 {
-    FILE *f = fopen("save.txt", "r");
-    for(int i=0; i<50; i++)
-    {
-    for(int j =0; j<50;j++)
-    fscanf(f,"%c" , swiat[i][j]);
-    }
-    fclose(f);
-
+    wyzeruj();
+    wczytaj_zapis();
 
     const char *token= argv[1];
-    wyzeruj();
+    
 
     for(int i=2; i<argc;i++)
     {
@@ -402,7 +425,7 @@ int main(int argc, char **argv)
         }
     }
 
-   
+    zapisz();
 
     return 0;
 }
