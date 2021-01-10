@@ -29,7 +29,6 @@ typedef struct _Mapa {
     char *type1;
     char *type2;
     char *type3;
-
 }Mapa;
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
@@ -244,6 +243,11 @@ Mapa *parameters(const char * const korzen, char *komenda)
 
     return zodiak;
 }
+
+
+
+
+
 
 
 void wypisz(Mapa *mapa, char *komenda)
