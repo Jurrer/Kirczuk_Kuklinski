@@ -20,17 +20,20 @@ typedef struct _Mapa {
     int step;
     char *field_type;
     char *field_bonus;
-    char *url;
-    int x1, y1, x2, y2, x3, y3;
+    int x1;
+    int y1;
+    int x2;
+    int y2;
+    int x3;
+    int y3;
     char *type1;
     char *type2;
     char *type3;
-
 }Mapa;
 
-typedef struct _swiat{
-    char pola[50][50];
-}swiat;
+
+char swiat[50][50];
+
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -97,38 +100,43 @@ char *make_request(char *url)
         if (res != CURLE_OK) {
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
-        
+
+        /* zawsze po sobie sprzątaj */
+        //free(chunk.response);
+        curl_easy_cleanup(curl);
     }
-
-//free(chunk.response);
-curl_easy_cleanup(curl);
-
-return chunk.response;
+    return chunk.response;
 }
 
-void info(char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/qwerty_25";
-    char *test = make_request(url);
-    printf("%s", test);
+char *info(const char *token) {
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
+    strcat(url, token);
+    char *response_json = make_request(url);
+    return response_json;
+
 }
 
-void move(char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/qwerty_25";
-    make_request(url);
+char *move(const char *token) {
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/";
+    strcat(url, token);
+    char *response_json = make_request(url);
+    return response_json;
 }
 
-void explore(char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/qwerty_25";
-    make_request(url);
+char *explore(const char *token) {
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/";
+    strcat(url, token);
+    char *response_json = make_request(url);
+    return response_json;
 }
 
-void left(const char *token) {
+char *left(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
     const char *left = "/left";
     strcat(url, left);
-    printf("%s\n", url);
-    make_request(url);
+    char *response_json = make_request(url);
+    return response_json;
 }
 
 char *right(const char *token) {
@@ -137,24 +145,35 @@ char *right(const char *token) {
     const char *right = "/right";
     strcat(url, right);
     char *response_json = make_request(url);
-    //wpisz(response);
     return response_json;
 }
 
-Mapa *parameters(const char * const korzen)
+Mapa *parameters(const char * const korzen, char *komenda)
 {
     Mapa *zodiak;
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
+    const cJSON *x = NULL;
+    const cJSON *list = NULL;
     const cJSON *name = NULL;
     const cJSON *current_x = NULL;
     const cJSON *current_y = NULL;
     const cJSON *current_session = NULL;
     const cJSON *direction = NULL;
     const cJSON *name1 = NULL;
+    const cJSON *name2 = NULL;
     const cJSON *step = NULL;
     const cJSON *field_type = NULL;
     const cJSON *field_bonus = NULL;
+    int *x1 = NULL;
+    int *y1 = NULL;
+    int *x2 = NULL;
+    int *y2 = NULL;
+    int *x3 = NULL;
+    int *y3 = NULL;
+    char *type1 = NULL;
+    char *type2 = NULL;
+    char *type3 = NULL;
 
     int statuskodu = 0;
     
@@ -167,60 +186,67 @@ Mapa *parameters(const char * const korzen)
             fprintf(stderr, "Error before: %s\n", error_ptr);
         }
         statuskodu = 0;
-        // goto end;
     }
 
 
     status = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "status");
     if (cJSON_IsString(status) && (status->valuestring != NULL))
     {
-        //printf("Checking %s \n", status->valuestring);
         zodiak->status = status->valuestring;
     }
 
-    payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
-    cJSON_ArrayForEach(name1, payload)
+    if(strcmp(komenda, "explore") == 0)
     {
-        cJSON *name = cJSON_GetObjectItemCaseSensitive(payload, "name");
-        //printf("Checking %s\n", name1->valuestring);
-        zodiak->name = name->valuestring;
-    
-        cJSON *current_x = cJSON_GetObjectItemCaseSensitive(payload, "current_x");
-        zodiak->current_x = current_x->valueint;
-        //printf("Checking %d\n", zodiak->current_x);
-
-        cJSON *current_y = cJSON_GetObjectItemCaseSensitive(payload, "current_y");
-        zodiak->current_y = current_y->valueint;
+        payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
+        zodiak->x1 = atoi(cJSON_Print(payload->child->child->child));
+        zodiak->y1 = atoi(cJSON_Print(payload->child->child->child->next));
+        zodiak->type1 = cJSON_Print(payload->child->child->child->next->next);
+        zodiak->x2 = atoi(cJSON_Print(payload->child->child->next->child));
+        zodiak->y2 = atoi(cJSON_Print(payload->child->child->next->child->next));
+        zodiak->type2 = cJSON_Print(payload->child->child->next->child->next->next);
+        zodiak->x3 = atoi(cJSON_Print(payload->child->child->next->next->child));
+        zodiak->y3 = atoi(cJSON_Print(payload->child->child->next->next->child->next));
+        zodiak->type3 = cJSON_Print(payload->child->child->next->next->child->next->next);
         
-        cJSON *current_session = cJSON_GetObjectItemCaseSensitive(payload, "current_session");
-        zodiak->current_session = current_session->valuestring;
-        
-        cJSON *direction = cJSON_GetObjectItemCaseSensitive(payload, "direction");
-        zodiak->direction = direction->valuestring;
-        
-        cJSON *step = cJSON_GetObjectItemCaseSensitive(payload, "step");
-        zodiak->step = step->valueint;
-        
-        cJSON *field_type = cJSON_GetObjectItemCaseSensitive(payload, "field_type");
-        zodiak->field_type = field_type->valuestring;
-        
-        cJSON *field_bonus = cJSON_GetObjectItemCaseSensitive(payload, "field_bonus");
-        zodiak->field_bonus = field_bonus->valuestring;
-    
     }
+    else
+    {
+        payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
+        cJSON_ArrayForEach(name1, payload)
+        {
+            cJSON *name = cJSON_GetObjectItemCaseSensitive(payload, "name");
+            zodiak->name = name->valuestring;
+        
+            cJSON *current_x = cJSON_GetObjectItemCaseSensitive(payload, "current_x");
+            zodiak->current_x = current_x->valueint;
+
+            cJSON *current_y = cJSON_GetObjectItemCaseSensitive(payload, "current_y");
+            zodiak->current_y = current_y->valueint;
+            
+            cJSON *current_session = cJSON_GetObjectItemCaseSensitive(payload, "current_session");
+            zodiak->current_session = current_session->valuestring;
+            
+            cJSON *direction = cJSON_GetObjectItemCaseSensitive(payload, "direction");
+            zodiak->direction = direction->valuestring;
+            
+            cJSON *step = cJSON_GetObjectItemCaseSensitive(payload, "step");
+            zodiak->step = step->valueint;
+            
+            cJSON *field_type = cJSON_GetObjectItemCaseSensitive(payload, "field_type");
+            zodiak->field_type = field_type->valuestring;
+            
+            cJSON *field_bonus = cJSON_GetObjectItemCaseSensitive(payload, "field_bonus");
+            zodiak->field_bonus = field_bonus->valuestring;
+        }
+    }
+
     return zodiak;
 }
 
 
-int parameters_e(const char * const korzen)
-{
-;
-}
-
-swiat *wpisz(char *response, char *komenda)
+void wpisz(char *response, char *komenda)
 {
     Mapa * tutaj_mamy_odpowiedz;
-    swiat *tutaj_wpisujemy_mapke;
     
     if(strcmp(komenda, "explore")==0){
     tutaj_mamy_odpowiedz = parameters(response, komenda);
@@ -230,52 +256,93 @@ swiat *wpisz(char *response, char *komenda)
         tutaj_mamy_odpowiedz = parameters(response, komenda);
     }
     
-    
+    swiat[1][1] = "P";
 
-return tutaj_wpisujemy_mapke;
 }
 
-void wypisz (Mapa *mapa)
+void narysuj(char *swiat)
 {
-    printf("%s\n", mapa->status);
-    printf("%s\n", mapa->name);
-    printf("%d\n", mapa->current_x);
-    printf("%d\n", mapa->current_y);
-    printf("krok nr:%d\n", mapa->step);
+    int i,j;
+    for(i=0; i<50; i++)
+    {
+    for(j=0; j<50; j++)
+    {
+        printf("%c", swiat[j][50 - i]);
+    }
+    }
+
+void wyzeruj(char *swiat)
+{
+    char znak[2] = "Y";
+    int i,j;
+    for(i=0; i<50; i++)
+    for(j=0; j<50; j++)
+    {
+        //narysujemy->pola[i][j] = znak;
+    }
+}
+
+
+void wypisz(Mapa *mapa, char *komenda)
+{
+    if(strcmp(komenda, "explore") == 0)
+    {
+        printf("%s\n", mapa->status);
+        printf("%d\n", mapa->x1);
+        printf("%d\n", mapa->y1);
+        printf("%s\n", mapa->type1);
+        printf("%d\n", mapa->x3);
+        printf("%d\n", mapa->y3);
+        printf("%s\n", mapa->type3);
+
+    }
+    else
+    {
+        printf("%s\n", mapa->status);
+        printf("%s\n", mapa->name);
+        printf("%d\n", mapa->current_x);
+        printf("%d\n", mapa->current_y);
+        printf("krok nr:%d\n", mapa->step);
+        printf("%s\n", mapa->current_session);
+        printf("Typ pola: %s\n", mapa->field_type);
+    }
 }
 
 int main(int argc, char **argv)
 {
-    char *token= argv[1];
-    swiat *nasza_mapa;
+    const char *token= argv[1];
 
     for(int i=2; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)
         {
-            info(token);
-
+            char *odpowiedz_json = info(token);
+            wpisz(odpowiedz_json, "info");
         }
         if(strcmp(argv[i], "explore") == 0)
         {
-            explore(token);
-
+            char *odpowiedz_json = explore(token);
+            wpisz(odpowiedz_json, "explore")
         }
         if(strcmp(argv[i], "right") == 0)
         {
             char *odpowiedz_json = right(token);
-            nasza_mapa = wpisz(odpowiedz_json, "right");
+            wpisz(odpowiedz_json, "right");
         }
         if(strcmp(argv[i], "move") == 0)
         {
-            move(token);
+            char *odpowiedz_json = right(token);
+            wpisz(odpowiedz_json, "move");
         }
         if(strcmp(argv[i], "left") == 0)
         {
-            left(token);
+            char *odpowiedz_json = left(token);
+            wpisz(odpowiedz_json, "left");
+            
         }
     }
 
-    //wypisz(nasza_mapa);
+
+    narysuj(swiat);
     return 0;
 }
