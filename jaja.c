@@ -20,16 +20,17 @@ typedef struct _Mapa {
     int step;
     char *field_type;
     char *field_bonus;
-
-}Mapa;
-
-typedef struct _Luneta {
-    int x1, y1, x2, y2, x3, y3;
+    int x1;
+    int y1;
+    int x2;
+    int y2;
+    int x3;
+    int y3;
     char *type1;
     char *type2;
     char *type3;
 
-}Luneta;
+}Mapa;
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -98,7 +99,7 @@ char *make_request(char *url)
         }
         else {
             FILE *fin = fopen("reply.cjson", "w+");
-            //printf("%s", chunk.response); /*informacja zwrotna z serwera*/
+            printf("%s", chunk.response); /*informacja zwrotna z serwera*/
             fprintf(fin, "%s", chunk.response);
             fclose(fin);
         }
@@ -142,7 +143,6 @@ void left(const char *token) {
 
 void right(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
-    make_request(url);
     strcat(url, token);
     const char *right = "/right";
     strcat(url, right);
@@ -150,20 +150,32 @@ void right(const char *token) {
     make_request(url);
 }
 
-Mapa *parameters(const char * const korzen)//musi btc status (korzen)
+Mapa *parameters(const char * const korzen, char *komenda)
 {
     Mapa *zodiak;
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
+    const cJSON *x = NULL;
+    const cJSON *list = NULL;
     const cJSON *name = NULL;
     const cJSON *current_x = NULL;
     const cJSON *current_y = NULL;
     const cJSON *current_session = NULL;
     const cJSON *direction = NULL;
     const cJSON *name1 = NULL;
+    const cJSON *name2 = NULL;
     const cJSON *step = NULL;
     const cJSON *field_type = NULL;
     const cJSON *field_bonus = NULL;
+    int *x1 = NULL;
+    int *y1 = NULL;
+    int *x2 = NULL;
+    int *y2 = NULL;
+    int *x3 = NULL;
+    int *y3 = NULL;
+    char *type1 = NULL;
+    char *type2 = NULL;
+    char *type3 = NULL;
 
     int statuskodu = 0;
     
@@ -185,147 +197,86 @@ Mapa *parameters(const char * const korzen)//musi btc status (korzen)
         zodiak->status = status->valuestring;
     }
 
-    payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
-    cJSON_ArrayForEach(name1, payload)
+    if(strcmp(komenda, "explore") == 0)
     {
-        cJSON *name = cJSON_GetObjectItemCaseSensitive(payload, "name");
-        zodiak->name = name->valuestring;
-    
-        cJSON *current_x = cJSON_GetObjectItemCaseSensitive(payload, "current_x");
-        zodiak->current_x = current_x->valueint;
+        payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
+        zodiak->x1 = atoi(cJSON_Print(payload->child->child->child));
+        zodiak->y1 = atoi(cJSON_Print(payload->child->child->child->next));
+        zodiak->type1 = cJSON_Print(payload->child->child->child->next->next);
+        zodiak->x2 = atoi(cJSON_Print(payload->child->child->next->child));
+        zodiak->y2 = atoi(cJSON_Print(payload->child->child->next->child->next));
+        zodiak->type2 = cJSON_Print(payload->child->child->next->child->next->next);
+        zodiak->x3 = atoi(cJSON_Print(payload->child->child->next->next->child));
+        zodiak->y3 = atoi(cJSON_Print(payload->child->child->next->next->child->next));
+        zodiak->type3 = cJSON_Print(payload->child->child->next->next->child->next->next);
+        
+    }
+    else
+    {
+        payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
+        cJSON_ArrayForEach(name1, payload)
+        {
+            cJSON *name = cJSON_GetObjectItemCaseSensitive(payload, "name");
+            zodiak->name = name->valuestring;
+        
+            cJSON *current_x = cJSON_GetObjectItemCaseSensitive(payload, "current_x");
+            zodiak->current_x = current_x->valueint;
 
-        cJSON *current_y = cJSON_GetObjectItemCaseSensitive(payload, "current_y");
-        zodiak->current_y = current_y->valueint;
-        
-        cJSON *current_session = cJSON_GetObjectItemCaseSensitive(payload, "current_session");
-        zodiak->current_session = current_session->valuestring;
-        
-        cJSON *direction = cJSON_GetObjectItemCaseSensitive(payload, "direction");
-        zodiak->direction = direction->valuestring;
-        
-        cJSON *step = cJSON_GetObjectItemCaseSensitive(payload, "step");
-        zodiak->step = step->valueint;
-        
-        cJSON *field_type = cJSON_GetObjectItemCaseSensitive(payload, "field_type");
-        zodiak->field_type = field_type->valuestring;
-        
-        cJSON *field_bonus = cJSON_GetObjectItemCaseSensitive(payload, "field_bonus");
-        zodiak->field_bonus = field_bonus->valuestring;
-    
-    
+            cJSON *current_y = cJSON_GetObjectItemCaseSensitive(payload, "current_y");
+            zodiak->current_y = current_y->valueint;
+            
+            cJSON *current_session = cJSON_GetObjectItemCaseSensitive(payload, "current_session");
+            zodiak->current_session = current_session->valuestring;
+            
+            cJSON *direction = cJSON_GetObjectItemCaseSensitive(payload, "direction");
+            zodiak->direction = direction->valuestring;
+            
+            cJSON *step = cJSON_GetObjectItemCaseSensitive(payload, "step");
+            zodiak->step = step->valueint;
+            
+            cJSON *field_type = cJSON_GetObjectItemCaseSensitive(payload, "field_type");
+            zodiak->field_type = field_type->valuestring;
+            
+            cJSON *field_bonus = cJSON_GetObjectItemCaseSensitive(payload, "field_bonus");
+            zodiak->field_bonus = field_bonus->valuestring;
+        }
     }
 
     return zodiak;
 }
 
-// Luneta *odkrywanie(const char * const korzen)
-// {
-//     Luneta *zodiak;
-//     const cJSON *x1 = NULL;
-//     const cJSON *x2 = NULL;
-//     const cJSON *x3 = NULL;
-//     const cJSON *type1 = NULL;
-//     const cJSON *type2 = NULL;
-//     const cJSON *type3 = NULL;
-//     const cJSON *payload = NULL;
-//     const cJSON *name1 = NULL;
-//     const cJSON *name2 = NULL;
-//     const cJSON *list = NULL;
 
-//     int statuskodu = 0;
-    
-//     cJSON *korzen_cjson = cJSON_Parse(korzen);
-//     if (korzen_cjson == NULL)
-//     {
-//         const char *error_ptr = cJSON_GetErrorPtr();
-//         if (error_ptr != NULL)
-//         {
-//             fprintf(stderr, "Error before: %s\n", error_ptr);
-//         }
-//         statuskodu = 0;
-//     }
-
-
-//     payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
-//     cJSON_ArrayForEach(name1, payload)
-//     {
-//         cJSON *list = cJSON_GetObjectItemCaseSensitive(payload, "list");
-//         cJSON_ArrayForEach(name2, list)
-//         {
-//             cJSON *x1 = cJSON_GetObjectItemCaseSensitive(list, "x");
-//             zodiak->x1 = x1->valueint;
-
-//             cJSON *y1 = cJSON_GetObjectItemCaseSensitive(list, "y");
-//             zodiak->y1 = y1->valueint;
-
-//             cJSON *type1 = cJSON_GetObjectItemCaseSensitive(list, "type");
-//             zodiak->type1 = type1->valuestring;
-//         }
-    
-//     }
-    
-//     // payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
-//     // cJSON_ArrayForEach(xyz, direction)
-//     // {
-//     //     cJSON *dir = cJSON_GetObjectItemCaseSensitive(xyz, "direction");
-//     //     zodiak->direction = xyz->valuestring;
-//     // }
-
-
-// //     cJSON_ArrayForEach(current_x, payload)
-// //     {
-// //         cJSON *current_x = cJSON_GetObjectItemCaseSensitive(name, "name");
-// //     }
-
-// //     cJSON_ArrayForEach(current_y, payload)
-// //     {
-// //         cJSON *current_y = cJSON_GetObjectItemCaseSensitive(name, "name");
-// //     }
-
-
-
-
-
-
-// //     payload = cJSON_GetObjectItemCaseSensitive(monitor_json, "payload");
-// //     cJSON_ArrayForEach(resolution, resolutions)
-// //     {
-// //         cJSON *width = cJSON_GetObjectItemCaseSensitive(resolution, "width");
-// //         cJSON *height = cJSON_GetObjectItemCaseSensitive(resolution, "height");
-
-// //         if (!cJSON_IsNumber(width) || !cJSON_IsNumber(height))
-// //         {
-// //             status = 0;
-// //             goto end;
-// //         }
-
-// //         if ((width->valuedouble == 1920) && (height->valuedouble == 1080))
-// //         {
-// //             statuskodu = 1;
-// //             goto end;
-// //         }
-// //     }
-
-// // end:
-//     //cJSON_Delete(korzen_cjson);
-//     return zodiak;
-// }
-// }
-
-void wypisz (Mapa *mapa)
+void wypisz(Mapa *mapa, char *komenda)
 {
-    // printf("%s\n", mapa->status);
-    // printf("%s\n", mapa->name);
-    // printf("%d\n", mapa->current_x);
-    // printf("%d\n", mapa->current_y);
-    // printf("krok nr:%d\n", mapa->step);
-    printf("Typ pola: %s\n", mapa->field_type);
+    if(strcmp(komenda, "explore") == 0)
+    {
+        printf("%s\n", mapa->status);
+        printf("%d\n", mapa->x1);
+        printf("%d\n", mapa->y1);
+        printf("%s\n", mapa->type1);
+        printf("%d\n", mapa->x3);
+        printf("%d\n", mapa->y3);
+        printf("%s\n", mapa->type3);
+
+    }
+    else
+    {
+        printf("%s\n", mapa->status);
+        printf("%s\n", mapa->name);
+        printf("%d\n", mapa->current_x);
+        printf("%d\n", mapa->current_y);
+        printf("krok nr:%d\n", mapa->step);
+        printf("%s\n", mapa->current_session);
+        printf("Typ pola: %s\n", mapa->field_type);
+    }
 }
 
 int main(int argc, char **argv)
 {
     const char *token= argv[1];
+    char *komenda;
 
+    
     
 
     for(int i=2; i<argc;i++)
@@ -333,34 +284,38 @@ int main(int argc, char **argv)
         if(strcmp(argv[i], "info") == 0)
         {
             info(token);
-            // wypisz(glowna);
+            komenda = argv[i];
         }
         if(strcmp(argv[i], "explore") == 0)
         {
             explore(token);
-            //odkryj(odkrywanie(tab));
+            komenda = argv[i];
         }
         if(strcmp(argv[i], "right") == 0)
         {
             right(token);
-            // wypisz(glowna);
+            komenda = argv[i];
         }
         if(strcmp(argv[i], "move") == 0)
         {
             move(token);
-            // wypisz(glowna);
+            komenda = argv[i];
         }
         if(strcmp(argv[i], "left") == 0)
         {
             left(token);
-            // wypisz(glowna);
+            komenda = argv[i];
+            
         }
     }
 
-    char tab[2048];
-	FILE *f = fopen("reply.cjson", "r");
+    
+	char tab[2048];
+    
+    FILE *f = fopen("reply.cjson", "r");
 	fread(tab,1,2048,f);
-    Mapa * glowna = parameters(tab);
+    Mapa *glowna = parameters(tab, komenda);
+    wypisz(glowna, komenda);
 
     fclose(f);
 
