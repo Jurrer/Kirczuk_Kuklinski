@@ -376,7 +376,6 @@ int main(int argc, char **argv)
 {
     wyzeruj();
 
-    //wczytaj_zapis();
 
     const char *token= argv[1];
     
