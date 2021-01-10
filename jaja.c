@@ -20,16 +20,13 @@ typedef struct _Mapa {
     int step;
     char *field_type;
     char *field_bonus;
-
-}Mapa;
-
-typedef struct _Luneta {
     int x1, y1, x2, y2, x3, y3;
     char *type1;
     char *type2;
     char *type3;
 
-}Luneta;
+}Mapa;
+
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -163,6 +160,17 @@ Mapa *parameters(const char * const korzen)//musi btc status (korzen)
     const cJSON *step = NULL;
     const cJSON *field_type = NULL;
     const cJSON *field_bonus = NULL;
+    const cJSON *list = NULL;
+    const cJSON *x1 = NULL;
+    const cJSON *y1 = NULL;
+    const cJSON *type1 = NULL;
+    const cJSON *x2 = NULL;
+    const cJSON *y2 = NULL;
+    const cJSON *type2 = NULL;
+    const cJSON *x3 = NULL;
+    const cJSON *y3 = NULL;
+    const cJSON *type3 = NULL;
+    const cJSON *hahaha = NULL;
 
     int statuskodu = 0;
     
@@ -182,35 +190,20 @@ Mapa *parameters(const char * const korzen)//musi btc status (korzen)
     if (cJSON_IsString(status) && (status->valuestring != NULL))
     {
         zodiak->status = status->valuestring;
+        printf("%s", zodiak->status)
     }
 
     payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
     cJSON_ArrayForEach(name1, payload)
     {
-        cJSON *name = cJSON_GetObjectItemCaseSensitive(payload, "name");
-        zodiak->name = name->valuestring;
-    
-        cJSON *current_x = cJSON_GetObjectItemCaseSensitive(payload, "current_x");
-        zodiak->current_x = current_x->valueint;
+        list = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "list");
+        cJSON_ArrayForEach(hahaha, list){
 
-        cJSON *current_y = cJSON_GetObjectItemCaseSensitive(payload, "current_y");
-        zodiak->current_y = current_y->valueint;
-        
-        cJSON *current_session = cJSON_GetObjectItemCaseSensitive(payload, "current_session");
-        zodiak->current_session = current_session->valuestring;
-        
-        cJSON *direction = cJSON_GetObjectItemCaseSensitive(payload, "direction");
-        zodiak->direction = direction->valuestring;
-        
-        cJSON *step = cJSON_GetObjectItemCaseSensitive(payload, "step");
-        zodiak->step = step->valueint;
-        
-        cJSON *field_type = cJSON_GetObjectItemCaseSensitive(payload, "field_type");
-        zodiak->field_type = field_type->valuestring;
-        
-        cJSON *field_bonus = cJSON_GetObjectItemCaseSensitive(payload, "field_bonus");
-        zodiak->field_bonus = field_bonus->valuestring;
+        cJSON *x1 = cJSON_GetObjectItemCaseSensitive(list, "x");
+        zodiak->x1 = x1->valueint;
+        }
     
+        
     
     }
 
@@ -313,11 +306,11 @@ Mapa *parameters(const char * const korzen)//musi btc status (korzen)
 
 void wypisz (Mapa *mapa)
 {
-    // printf("%s\n", mapa->status);
-    // printf("%s\n", mapa->name);
-    // printf("%d\n", mapa->current_x);
-    // printf("%d\n", mapa->current_y);
-    // printf("krok nr:%d\n", mapa->step);
+    printf("%s\n", mapa->status);
+    printf("%s\n", mapa->name);
+    printf("%d\n", mapa->current_x);
+    printf("%d\n", mapa->current_y);
+    printf("krok nr:%d\n", mapa->step);
     printf("Typ pola: %s\n", mapa->field_type);
 }
 
@@ -360,7 +353,7 @@ int main(int argc, char **argv)
 	FILE *f = fopen("reply.cjson", "r");
 	fread(tab,1,2048,f);
     Mapa * glowna = parameters(tab);
-
+    wypisz(glowna);
     fclose(f);
 
 

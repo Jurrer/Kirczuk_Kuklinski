@@ -21,15 +21,16 @@ typedef struct _Mapa {
     char *field_type;
     char *field_bonus;
     char *url;
-}Mapa;
-
-typedef struct _Luneta {
     int x1, y1, x2, y2, x3, y3;
     char *type1;
     char *type2;
     char *type3;
 
-}Luneta;
+}Mapa;
+
+typedef struct _swiat{
+    char pola[50][50];
+}swiat;
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -130,13 +131,14 @@ void left(const char *token) {
     make_request(url);
 }
 
-char * right(const char *token) {
+char *right(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
     const char *right = "/right";
     strcat(url, right);
-    char *response = make_request(url);
-    return response;
+    char *response_json = make_request(url);
+    //wpisz(response);
+    return response_json;
 }
 
 Mapa *parameters(const char * const korzen)
@@ -209,9 +211,28 @@ Mapa *parameters(const char * const korzen)
     return zodiak;
 }
 
-int odkrywanie(const char * const korzen)
+
+int parameters_e(const char * const korzen)
 {
 ;
+}
+
+swiat *wpisz(char *response, char *komenda)
+{
+    Mapa * tutaj_mamy_odpowiedz;
+    swiat *tutaj_wpisujemy_mapke;
+    
+    if(strcmp(komenda, "explore")==0){
+    tutaj_mamy_odpowiedz = parameters(response, komenda);
+    }
+    else
+    {
+        tutaj_mamy_odpowiedz = parameters(response, komenda);
+    }
+    
+    
+
+return tutaj_wpisujemy_mapke;
 }
 
 void wypisz (Mapa *mapa)
@@ -226,20 +247,24 @@ void wypisz (Mapa *mapa)
 int main(int argc, char **argv)
 {
     char *token= argv[1];
+    swiat *nasza_mapa;
 
     for(int i=2; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)
         {
             info(token);
+
         }
         if(strcmp(argv[i], "explore") == 0)
         {
             explore(token);
+
         }
         if(strcmp(argv[i], "right") == 0)
         {
-            right(token);
+            char *odpowiedz_json = right(token);
+            nasza_mapa = wpisz(odpowiedz_json, "right");
         }
         if(strcmp(argv[i], "move") == 0)
         {
@@ -251,8 +276,6 @@ int main(int argc, char **argv)
         }
     }
 
-    //Mapa * glowna = parameters(bufor);
-    //wypisz(glowna);
-
+    //wypisz(nasza_mapa);
     return 0;
 }
