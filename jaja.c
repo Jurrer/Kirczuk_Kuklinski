@@ -49,7 +49,7 @@ void narysuj()
 void wczytaj_zapis()
 {
     system("touch save.txt");
-    FILE *f;
+    FILE *f; 
     f = fopen("save.txt", "r");
     for(int i=0; i<50; i++)
     {
@@ -58,8 +58,8 @@ void wczytaj_zapis()
             fscanf(f, "%c", &swiat[i][j]);
         }
     }
-    system("rm save.txt");
     fclose(f);
+    system("rm save.txt");
 }
 
 void zapisz()
@@ -315,11 +315,14 @@ void wpisz(char *response, char *komenda)
             swiat[odpowiedz->x3][odpowiedz->y3] = 'X';
         }
         if(strcmp(odpowiedz->type3, "\"grass\"") == 0){
-            swiat[odpowiedz->x3][odpowiedz->y1] = 'g';
+            swiat[odpowiedz->x3][odpowiedz->y3] = 'g';
         }
         if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
             swiat[odpowiedz->x3][odpowiedz->y3] = 's';
         }
+    
+    
+    
     }
     else
     {
@@ -333,16 +336,7 @@ void wpisz(char *response, char *komenda)
             swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
         }
     }
-// FILE *f = fopen("save.txt", "w");
-// for (int i = 0; i<50; i++)
-//     {
-//         for(int j = 0; j<50; j++)
-//         {
-//             fprintf(f,"%c", swiat[i][j]);
-//         }
-//         printf("\n");
-//     }
-
+    
 }
 
 void wyzeruj()
@@ -350,10 +344,10 @@ void wyzeruj()
     int i,j;
     for(i=0; i<50; i++)
     {
-    for(j=0; j<50; j++)
-    {
-        swiat[i][j] = ' ';
-    }
+        for(j=0; j<50; j++)
+        {
+            swiat[i][j] = '+';
+        }
     }
 }
 
@@ -384,14 +378,13 @@ void wypisz(Mapa *mapa, char *komenda)
 
 int main(int argc, char **argv)
 {
-
     wyzeruj();
-
 
     wczytaj_zapis();
 
     const char *token= argv[1];
     
+
     for(int i=2; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)
@@ -424,7 +417,7 @@ int main(int argc, char **argv)
             narysuj();
         }
     }
-
+    narysuj();
     zapisz();
 
     return 0;
