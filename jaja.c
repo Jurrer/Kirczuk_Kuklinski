@@ -31,10 +31,7 @@ typedef struct _Mapa {
     char *type3;
 }Mapa;
 
-typedef struct _swiat{
-    char pola[50][50];
-}swiat;
-
+char swiat[50][50];
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -105,38 +102,40 @@ char *make_request(char *url)
         /* zawsze po sobie sprzątaj */
         //free(chunk.response);
         curl_easy_cleanup(curl);
+        printf("%s\n", chunk.response);
     }
     return chunk.response;
 }
 
-void info(const char *token) {
+char *info(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
     strcat(url, token);
-    //printf("%s\n", url);
-    make_request(url);
+    char *response_json = make_request(url);
+    return response_json;
 
 }
 
-void move(const char *token) {
+char *move(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/";
     strcat(url, token);
-    
-    make_request(url);
+    char *response_json = make_request(url);
+    return response_json;
 }
 
-void explore(const char *token) {
+char *explore(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/";
     strcat(url, token);
-    make_request(url);
+    char *response_json = make_request(url);
+    return response_json;
 }
 
-void left(const char *token) {
+char *left(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
     const char *left = "/left";
     strcat(url, left);
-    printf("%s\n", url);
-    make_request(url);
+    char *response_json = make_request(url);
+    return response_json;
 }
 
 char *right(const char *token) {
@@ -145,7 +144,6 @@ char *right(const char *token) {
     const char *right = "/right";
     strcat(url, right);
     char *response_json = make_request(url);
-    //wpisz(response);
     return response_json;
 }
 
@@ -244,28 +242,69 @@ Mapa *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }
 
-
-
-swiat *wpisz(char *response, char *komenda)
+void wpisz(char *response, char *komenda)
 {
-    Mapa * tutaj_mamy_odpowiedz;
-    swiat *tutaj_wpisujemy_mapke;
+    Mapa * odpowiedz;
+    
     
     if(strcmp(komenda, "explore")==0){
-    tutaj_mamy_odpowiedz = parameters(response, komenda);
+    odpowiedz = parameters(response, komenda);
+        if(strcmp(odpowiedz->type1, "\"wall\"") == 0){
+            swiat[odpowiedz->x1][odpowiedz->y1] = 'X';
+        }
+        if(strcmp(odpowiedz->type1, "\"grass\"") == 0){
+            swiat[odpowiedz->x1][odpowiedz->y1] = 'g';
+        }
+        if(strcmp(odpowiedz->type1, "\"sand\"") == 0){
+            swiat[odpowiedz->x1][odpowiedz->y1] = 's';
+        }
+
+        if(strcmp(odpowiedz->type2, "\"wall\"") == 0){
+            swiat[odpowiedz->x2][odpowiedz->y2] = 'X';
+        }
+        if(strcmp(odpowiedz->type2, "\"grass\"") == 0){
+            swiat[odpowiedz->x2][odpowiedz->y2] = 'g';
+        }
+        if(strcmp(odpowiedz->type2, "\"sand\"") == 0){
+            swiat[odpowiedz->x2][odpowiedz->y2] = 's';
+        }
+
+        if(strcmp(odpowiedz->type3, "\"wall\"") == 0){
+            swiat[odpowiedz->x3][odpowiedz->y3] = 'X';
+        }
+        if(strcmp(odpowiedz->type3, "\"grass\"") == 0){
+            swiat[odpowiedz->x3][odpowiedz->y1] = 'g';
+        }
+        if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
+            swiat[odpowiedz->x3][odpowiedz->y3] = 's';
+        }
+    
+    
+    
     }
     else
     {
-        tutaj_mamy_odpowiedz = parameters(response, komenda);
+        odpowiedz = parameters(response, komenda);
+        if(strcmp(odpowiedz->field_type, "grass") == 0)
+        {
+            swiat[odpowiedz->current_x][odpowiedz->current_y] = 'g';
+        }
+        if(strcmp(odpowiedz->field_type, "sand") == 0)
+        {
+            swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
+        }
     }
-    
-    
 
-return tutaj_wpisujemy_mapke;
+for (int i = 0; i<50; i++)
+    {
+        for(int j = 0; j<50; j++)
+        {
+            printf("%c", swiat[j][50-i]);
+        }
+        printf("\n");
+    }
+
 }
-
-
-
 
 void wypisz(Mapa *mapa, char *komenda)
 {
@@ -295,8 +334,6 @@ void wypisz(Mapa *mapa, char *komenda)
 int main(int argc, char **argv)
 {
     const char *token= argv[1];
-    char *komenda;
-    swiat *nasza_mapa;
 
     
     
@@ -305,33 +342,33 @@ int main(int argc, char **argv)
     {
         if(strcmp(argv[i], "info") == 0)
         {
-            info(token);
-            komenda = argv[i];
+            char *odpowiedz_json = info(token);
+            wpisz(odpowiedz_json, "info");
         }
         if(strcmp(argv[i], "explore") == 0)
         {
-            explore(token);
-            komenda = argv[i];
+            char *odpowiedz_json = explore(token);
+            wpisz(odpowiedz_json, "explore");
         }
         if(strcmp(argv[i], "right") == 0)
         {
             char *odpowiedz_json = right(token);
-            nasza_mapa = wpisz(odpowiedz_json, "right");
+            wpisz(odpowiedz_json, "right");
         }
         if(strcmp(argv[i], "move") == 0)
         {
-            char *odpowiedz_json = right(token);
-            nasza_mapa = wpisz(odpowiedz_json, "move");
+            char *odpowiedz_json = move(token);
+            wpisz(odpowiedz_json, "move");
         }
         if(strcmp(argv[i], "left") == 0)
         {
-            left(token);
-            komenda = argv[i];
+            char *odpowiedz_json = left(token);
+            wpisz(odpowiedz_json, "left");
             
         }
     }
 
-narysuj(nasza_mapa);
+    // narysuj(nasza_mapa);
 
 
     return 0;
