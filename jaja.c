@@ -33,19 +33,33 @@ typedef struct _Mapa {
 
 char swiat[50][50];
 
+void narysuj()
+{
+    int i,j;
+    for(i=0; i<50; i++)
+    {
+    for(j=0; j<50; j++)
+    {
+        printf("%c", swiat[i][j]);
+    }
+    printf("\n");
+    }
+}
+
 void wczytaj_zapis()
 {
-    FILE *f; 
-    f = fopen("save.txt", "w+");
+    system("touch save.txt");
+    FILE *f;
+    f = fopen("save.txt", "r");
     for(int i=0; i<50; i++)
     {
         for(int j =0; j<50;j++)
         {
-            fscanf(f, "%c", swiat[j][50-i]);
+            fscanf(f, "%c", &swiat[i][j]);
         }
     }
-    fclose(f);
     system("rm save.txt");
+    fclose(f);
 }
 
 void zapisz()
@@ -56,7 +70,7 @@ void zapisz()
     {
         for(int j =0; j<50;j++)
         {
-            fprintf(fin, "%c", swiat[j][50-i]);
+            fprintf(fin, "%c", swiat[i][j]);
         }
         fprintf(fin, "\n");
     }
@@ -306,9 +320,6 @@ void wpisz(char *response, char *komenda)
         if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
             swiat[odpowiedz->x3][odpowiedz->y3] = 's';
         }
-    
-    
-    
     }
     else
     {
@@ -332,19 +343,6 @@ void wpisz(char *response, char *komenda)
 //         printf("\n");
 //     }
 
-}
-
-void narysuj()
-{
-    int i,j;
-    for(i=0; i<50; i++)
-    {
-    for(j=0; j<50; j++)
-    {
-        printf("%c", swiat[j][50 - i]);
-    }
-    printf("\n");
-    }
 }
 
 void wyzeruj()
@@ -386,12 +384,14 @@ void wypisz(Mapa *mapa, char *komenda)
 
 int main(int argc, char **argv)
 {
+
     wyzeruj();
+
+
     wczytaj_zapis();
 
     const char *token= argv[1];
     
-
     for(int i=2; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)
