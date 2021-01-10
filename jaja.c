@@ -31,6 +31,11 @@ typedef struct _Mapa {
     char *type3;
 }Mapa;
 
+typedef struct _swiat{
+    char pola[50][50];
+}swiat;
+
+
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
     /* to jest rzeczywista liczba bajtów przekazanych przez curl */
@@ -96,18 +101,12 @@ char *make_request(char *url)
         if (res != CURLE_OK) {
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
-        else {
-            FILE *fin = fopen("reply.cjson", "w+");
-            printf("%s", chunk.response); /*informacja zwrotna z serwera*/
-            fprintf(fin, "%s", chunk.response);
-            fclose(fin);
-        }
 
         /* zawsze po sobie sprzątaj */
-        free(chunk.response);
+        //free(chunk.response);
         curl_easy_cleanup(curl);
     }
-    return 0;
+    return chunk.response;
 }
 
 void info(const char *token) {
@@ -140,13 +139,14 @@ void left(const char *token) {
     make_request(url);
 }
 
-void right(const char *token) {
+char *right(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
     const char *right = "/right";
     strcat(url, right);
-    printf("%s\n", url);
-    make_request(url);
+    char *response_json = make_request(url);
+    //wpisz(response);
+    return response_json;
 }
 
 Mapa *parameters(const char * const korzen, char *komenda)
@@ -246,6 +246,23 @@ Mapa *parameters(const char * const korzen, char *komenda)
 
 
 
+swiat *wpisz(char *response, char *komenda)
+{
+    Mapa * tutaj_mamy_odpowiedz;
+    swiat *tutaj_wpisujemy_mapke;
+    
+    if(strcmp(komenda, "explore")==0){
+    tutaj_mamy_odpowiedz = parameters(response, komenda);
+    }
+    else
+    {
+        tutaj_mamy_odpowiedz = parameters(response, komenda);
+    }
+    
+    
+
+return tutaj_wpisujemy_mapke;
+}
 
 
 
@@ -279,6 +296,7 @@ int main(int argc, char **argv)
 {
     const char *token= argv[1];
     char *komenda;
+    swiat *nasza_mapa;
 
     
     
@@ -297,13 +315,13 @@ int main(int argc, char **argv)
         }
         if(strcmp(argv[i], "right") == 0)
         {
-            right(token);
-            komenda = argv[i];
+            char *odpowiedz_json = right(token);
+            nasza_mapa = wpisz(odpowiedz_json, "right");
         }
         if(strcmp(argv[i], "move") == 0)
         {
-            move(token);
-            komenda = argv[i];
+            char *odpowiedz_json = right(token);
+            nasza_mapa = wpisz(odpowiedz_json, "move");
         }
         if(strcmp(argv[i], "left") == 0)
         {
@@ -313,15 +331,7 @@ int main(int argc, char **argv)
         }
     }
 
-    
-	char tab[2048];
-    
-    FILE *f = fopen("reply.cjson", "r");
-	fread(tab,1,2048,f);
-    Mapa *glowna = parameters(tab, komenda);
-    wypisz(glowna, komenda);
-
-    fclose(f);
+narysuj(nasza_mapa);
 
 
     return 0;
