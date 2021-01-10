@@ -20,6 +20,7 @@ typedef struct _Mapa {
     int step;
     char *field_type;
     char *field_bonus;
+    char *url;
 }Mapa;
 
 typedef struct _Luneta {
@@ -95,22 +96,13 @@ char *make_request(char *url)
         if (res != CURLE_OK) {
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
-        else {
-            
-            /*
-            FILE *fin = fopen("reply.cjson", "w+");
-            //printf("%s", chunk.response); /*informacja zwrotna z serwera
-            fprintf(fin, "%s", chunk.response);
-            fclose(fin);
-            */
-            // printf("alamakota\n");
-        }
-
-        /* zawsze po sobie sprzątaj */
-        //free(chunk.response);
-        //curl_easy_cleanup(curl);
+        
     }
-    return chunk.response;
+
+//free(chunk.response);
+curl_easy_cleanup(curl);
+
+return chunk.response;
 }
 
 void info(char *token) {
@@ -129,17 +121,25 @@ void explore(char *token) {
     make_request(url);
 }
 
-void left(char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/qwerty_25/left";
+void left(const char *token) {
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
+    strcat(url, token);
+    const char *left = "/left";
+    strcat(url, left);
+    printf("%s\n", url);
     make_request(url);
 }
 
-void right(char *token) {
-    char *url = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/qwerty_25/right";
-    make_request(url);
+char * right(const char *token) {
+    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
+    strcat(url, token);
+    const char *right = "/right";
+    strcat(url, right);
+    char *response = make_request(url);
+    return response;
 }
 
-Mapa *parameters(const char * const korzen)//musi btc status (korzen)
+Mapa *parameters(const char * const korzen)
 {
     Mapa *zodiak;
     const cJSON *status = NULL;
@@ -205,54 +205,7 @@ Mapa *parameters(const char * const korzen)//musi btc status (korzen)
         cJSON *field_bonus = cJSON_GetObjectItemCaseSensitive(payload, "field_bonus");
         zodiak->field_bonus = field_bonus->valuestring;
     
-    
     }
-
-    
-    // payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
-    // cJSON_ArrayForEach(xyz, direction)
-    // {
-    //     cJSON *dir = cJSON_GetObjectItemCaseSensitive(xyz, "direction");
-    //     zodiak->direction = xyz->valuestring;
-    // }
-
-
-//     cJSON_ArrayForEach(current_x, payload)
-//     {
-//         cJSON *current_x = cJSON_GetObjectItemCaseSensitive(name, "name");
-//     }
-
-//     cJSON_ArrayForEach(current_y, payload)
-//     {
-//         cJSON *current_y = cJSON_GetObjectItemCaseSensitive(name, "name");
-//     }
-
-
-
-
-
-
-//     payload = cJSON_GetObjectItemCaseSensitive(monitor_json, "payload");
-//     cJSON_ArrayForEach(resolution, resolutions)
-//     {
-//         cJSON *width = cJSON_GetObjectItemCaseSensitive(resolution, "width");
-//         cJSON *height = cJSON_GetObjectItemCaseSensitive(resolution, "height");
-
-//         if (!cJSON_IsNumber(width) || !cJSON_IsNumber(height))
-//         {
-//             status = 0;
-//             goto end;
-//         }
-
-//         if ((width->valuedouble == 1920) && (height->valuedouble == 1080))
-//         {
-//             statuskodu = 1;
-//             goto end;
-//         }
-//     }
-
-// end:
-    //cJSON_Delete(korzen_cjson);
     return zodiak;
 }
 
@@ -272,9 +225,9 @@ void wypisz (Mapa *mapa)
 
 int main(int argc, char **argv)
 {
-    char *token= argv[0];
-    
-    for(int i=1; i<argc;i++)
+    char *token= argv[1];
+
+    for(int i=2; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)
         {
@@ -298,13 +251,8 @@ int main(int argc, char **argv)
         }
     }
 
-    char tab[2048];
-	FILE *f = fopen("reply.cjson", "r");
-	fread(tab,1,2048,f);
-    Mapa * glowna = parameters(tab);
-    wypisz(glowna);
-    fclose(f);
-
+    //Mapa * glowna = parameters(bufor);
+    //wypisz(glowna);
 
     return 0;
 }
