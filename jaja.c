@@ -300,7 +300,6 @@ void wpisz(char *response, char *komenda)
         if(strcmp(odpowiedz->type1, "\"sand\"") == 0){
             swiat[odpowiedz->x1][odpowiedz->y1] = 's';
         }
-
         if(strcmp(odpowiedz->type2, "\"wall\"") == 0){
             swiat[odpowiedz->x2][odpowiedz->y2] = 'X';
         }
@@ -320,9 +319,6 @@ void wpisz(char *response, char *komenda)
         if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
             swiat[odpowiedz->x3][odpowiedz->y3] = 's';
         }
-    
-    
-    
     }
     else
     {
@@ -380,7 +376,7 @@ int main(int argc, char **argv)
 {
     wyzeruj();
 
-    wczytaj_zapis();
+    //wczytaj_zapis();
 
     const char *token= argv[1];
     
@@ -417,7 +413,7 @@ int main(int argc, char **argv)
             narysuj();
         }
     }
-    narysuj();
+
     zapisz();
 
     return 0;
