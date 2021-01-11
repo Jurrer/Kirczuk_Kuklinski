@@ -1,12 +1,11 @@
-DEPS=jaja_2.c
+DEPS=main.c
 
-iCzolg: $(DEPS)
-	cc $(DEPS) -o jaja_2.a -lcurl -Wall --pedantic ../cJSON/cJSON.o
+all: $(DEPS)
+	cc $(DEPS) -o main.a -lcurl ../cJSON/cJSON.o
 
-run:jaja_2.a
-	./jaja_2.a left 
+run:main.a
+	./main.a qwerty_16 left 
 
 clean:
-	rm -f jaja_2.a
-	rm -f *.o
+	rm -f main.a
 	rm -f *.a

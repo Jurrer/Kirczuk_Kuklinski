@@ -4,10 +4,16 @@
 #include <curl/curl.h>
 #include "../cJSON/cJSON.h"
 
+#define Rozmiar 50
+
 typedef struct _Memory {
     char *response;
     size_t size;
 }Memory;
+ 
+struct zmienne {
+     int x;
+ };
 
 typedef struct _Mapa {
     char *status;
@@ -31,14 +37,15 @@ typedef struct _Mapa {
     char *type3;
 }Mapa;
 
-char swiat[50][50];
+char swiat[Rozmiar][Rozmiar];
 
-void narysuj()
+
+void narysuj_swiat()
 {
     int i,j;
-    for(i=0; i<50; i++)
+    for(i=0; i<Rozmiar; i++)
     {
-    for(j=0; j<50; j++)
+    for(j=0; j<Rozmiar; j++)
     {
         printf("%c", swiat[i][j]);
     }
@@ -46,21 +53,6 @@ void narysuj()
     }
 }
 
-void wczytaj_zapis()
-{
-    system("touch save.txt");
-    FILE *f; 
-    f = fopen("save.txt", "r");
-    for(int i=0; i<50; i++)
-    {
-        for(int j =0; j<50;j++)
-        {
-            fscanf(f, "%c", &swiat[i][j]);
-        }
-    }
-    fclose(f);
-    system("rm save.txt");
-}
 
 void zapisz()
 {
@@ -372,13 +364,12 @@ void wypisz(Mapa *mapa, char *komenda)
     }
 }
 
+
 int main(int argc, char **argv)
 {
     wyzeruj();
 
-
-    const char *token= argv[1];
-    
+    const char *token= argv[1];    
 
     for(int i=2; i<argc;i++)
     {
@@ -409,7 +400,7 @@ int main(int argc, char **argv)
         }
         if(i == (argc-1))
         {
-            narysuj();
+            narysuj_swiat();
         }
     }
 

@@ -8,6 +8,10 @@ typedef struct _Memory {
     char *response;
     size_t size;
 }Memory;
+ 
+ struct zmienne {
+     int x;
+ };
 
 typedef struct _Mapa {
     char *status;
@@ -31,9 +35,65 @@ typedef struct _Mapa {
     char *type3;
 }Mapa;
 
-
 char swiat[50][50];
 
+void narysuj_swiat()
+{
+    int i,j;
+    for(i=0; i<50; i++)
+    {
+    for(j=0; j<50; j++)
+    {
+        printf("%s", &swiat[i][j]);
+    }
+    printf("\n");
+    }
+}
+/*
+void narysuj(char schowek[50][50])
+{
+   int i,j;
+    for(i=0; i<50; i++)
+    {
+    for(j=0; j<50; j++)
+    {
+        printf("%s", schowek[i][j]);
+    }
+    printf("\n");
+    } 
+}
+*/
+
+void wczytaj_zapis()
+{
+    system("touch save.txt");
+    FILE *f; 
+    f = fopen("save.txt", "r");
+    for(int i=0; i<50; i++)
+    {
+        for(int j =0; j<50;j++)
+        {
+            fscanf(f, "%c", &swiat[i][j]);
+        }
+    }
+    fclose(f);
+    system("rm save.txt");
+}
+
+void zapisz()
+{
+    FILE *fin;
+    fin = fopen("save.txt", "w");
+    for(int i=0; i<50; i++)
+    {
+        for(int j =0; j<50;j++)
+        {
+            fprintf(fin, "%c", swiat[i][j]);
+        }
+        fprintf(fin, "\n");
+    }
+    fclose(fin);
+}
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -104,6 +164,7 @@ char *make_request(char *url)
         /* zawsze po sobie sprzątaj */
         //free(chunk.response);
         curl_easy_cleanup(curl);
+        printf("%s\n", chunk.response);
     }
     return chunk.response;
 }
@@ -243,45 +304,66 @@ Mapa *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }
 
-
 void wpisz(char *response, char *komenda)
 {
-    Mapa * tutaj_mamy_odpowiedz;
-    
+    Mapa * odpowiedz;
     if(strcmp(komenda, "explore")==0){
-    tutaj_mamy_odpowiedz = parameters(response, komenda);
+    odpowiedz = parameters(response, komenda);
+        if(strcmp(odpowiedz->type1, "\"wall\"") == 0){
+            swiat[odpowiedz->x1][odpowiedz->y1] = 'X';
+        }
+        if(strcmp(odpowiedz->type1, "\"grass\"") == 0){
+            swiat[odpowiedz->x1][odpowiedz->y1] = 'g';
+        }
+        if(strcmp(odpowiedz->type1, "\"sand\"") == 0){
+            swiat[odpowiedz->x1][odpowiedz->y1] = 's';
+        }
+        if(strcmp(odpowiedz->type2, "\"wall\"") == 0){
+            swiat[odpowiedz->x2][odpowiedz->y2] = 'X';
+        }
+        if(strcmp(odpowiedz->type2, "\"grass\"") == 0){
+            swiat[odpowiedz->x2][odpowiedz->y2] = 'g';
+        }
+        if(strcmp(odpowiedz->type2, "\"sand\"") == 0){
+            swiat[odpowiedz->x2][odpowiedz->y2] = 's';
+        }
+
+        if(strcmp(odpowiedz->type3, "\"wall\"") == 0){
+            swiat[odpowiedz->x3][odpowiedz->y3] = 'X';
+        }
+        if(strcmp(odpowiedz->type3, "\"grass\"") == 0){
+            swiat[odpowiedz->x3][odpowiedz->y3] = 'g';
+        }
+        if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
+            swiat[odpowiedz->x3][odpowiedz->y3] = 's';
+        }
     }
     else
     {
-        tutaj_mamy_odpowiedz = parameters(response, komenda);
+        odpowiedz = parameters(response, komenda);
+        if(strcmp(odpowiedz->field_type, "grass") == 0)
+        {
+            swiat[odpowiedz->current_x][odpowiedz->current_y] = 'g';
+        }
+        if(strcmp(odpowiedz->field_type, "sand") == 0)
+        {
+            swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
+        }
     }
     
-    swiat[1][1] = "P";
-
 }
 
-void narysuj(char *swiat)
+void wyzeruj()
 {
     int i,j;
     for(i=0; i<50; i++)
     {
-    for(j=0; j<50; j++)
-    {
-        printf("%c", swiat[j][50 - i]);
-    }
-    }
-
-void wyzeruj(char *swiat)
-{
-    char znak[2] = "Y";
-    int i,j;
-    for(i=0; i<50; i++)
-    for(j=0; j<50; j++)
-    {
-        //narysujemy->pola[i][j] = znak;
+        for(j=0; j<50; j++)
+        {
+            swiat[i][j] = '+';
+        }
     }
 }
-
 
 void wypisz(Mapa *mapa, char *komenda)
 {
@@ -308,9 +390,55 @@ void wypisz(Mapa *mapa, char *komenda)
     }
 }
 
+int zapisz_postep()
+{
+    
+    FILE *f = fopen("save.txt", "r");
+    //FILE *g = fopen("history.txt", "w");
+    char schowek[50][50];
+
+    for(int i=0; i<50; i++)
+    {
+        for(int j =0; j<50;j++)
+        {
+            fread(schowek,1, 2048, f);
+        }
+    }
+    fclose(f);
+
+
+
+    //narysuj(char schowek[50][50]);
+
+    int i,j;
+    for(i=0; i<50; i++)
+    {
+    for(j=0; j<50; j++)
+    {
+        printf("%c", schowek[i][j]);
+    }
+    printf("\n");
+    }
+    return 0;
+}
+    
+
+
 int main(int argc, char **argv)
 {
+    wyzeruj();
+
     const char *token= argv[1];
+
+    if(strcmp(argv[1], "wczytaj_postep") == 0)
+        {
+            //wczytaj_postep();
+        }
+    if(strcmp(argv[1], "zapisz_postep") == 0)
+        {
+            int x =zapisz_postep();
+            return x;
+        }        
 
     for(int i=2; i<argc;i++)
     {
@@ -322,7 +450,7 @@ int main(int argc, char **argv)
         if(strcmp(argv[i], "explore") == 0)
         {
             char *odpowiedz_json = explore(token);
-            wpisz(odpowiedz_json, "explore")
+            wpisz(odpowiedz_json, "explore");
         }
         if(strcmp(argv[i], "right") == 0)
         {
@@ -331,18 +459,21 @@ int main(int argc, char **argv)
         }
         if(strcmp(argv[i], "move") == 0)
         {
-            char *odpowiedz_json = right(token);
+            char *odpowiedz_json = move(token);
             wpisz(odpowiedz_json, "move");
         }
         if(strcmp(argv[i], "left") == 0)
         {
             char *odpowiedz_json = left(token);
             wpisz(odpowiedz_json, "left");
-            
+        }
+        if(i == (argc-1))
+        {
+            narysuj_swiat();
         }
     }
 
+    //zapisz();
 
-    narysuj(swiat);
     return 0;
 }
