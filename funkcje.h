@@ -37,7 +37,7 @@ Mapa *parameters(const char * const korzen, char *komenda);
 
 void wyzeruj();
 
-void wpisz(char *response, char *komenda);
+Mapa *wpisz(char *response, char *komenda);
 
 void zapisz();
 

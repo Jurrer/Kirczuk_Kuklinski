@@ -99,8 +99,7 @@ char *explore(const char *token) {
 char *left(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
-    const char *left = "/left";
-    strcat(url, left);
+    strcat(url, "/left");
     char *response_json = make_request(url);
     return response_json;
 }
@@ -108,8 +107,7 @@ char *left(const char *token) {
 char *right(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
-    const char *right = "/right";
-    strcat(url, right);
+    strcat(url, "/right");
     char *response_json = make_request(url);
     return response_json;
 }

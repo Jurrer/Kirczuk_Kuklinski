@@ -17,7 +17,6 @@ Mapa *parameters(const char * const korzen, char *komenda)
     const cJSON *name1 = NULL;
     const cJSON *name2 = NULL;
     const cJSON *name3 = NULL;
-    const cJSON *puste1 = NULL;
     const cJSON *step = NULL;
     const cJSON *field_type = NULL;
     const cJSON *field_bonus = NULL;
@@ -33,6 +32,7 @@ Mapa *parameters(const char * const korzen, char *komenda)
 
     int statuskodu = 0;
     
+    
     cJSON *korzen_cjson = cJSON_Parse(korzen);
     if (korzen_cjson == NULL)
     {
@@ -44,6 +44,8 @@ Mapa *parameters(const char * const korzen, char *komenda)
         statuskodu = 0;
     }
 
+    
+
 
     status = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "status");
     if (cJSON_IsString(status) && (status->valuestring != NULL))
@@ -51,6 +53,7 @@ Mapa *parameters(const char * const korzen, char *komenda)
         zodiak->status = status->valuestring;
     }
     
+
     if(strcmp(komenda, "explore") == 0)
     {
         payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
@@ -134,7 +137,6 @@ Mapa *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }
 
-
 void narysuj_swiat()
 {
     int i,j;
@@ -163,8 +165,7 @@ void zapisz()
     fclose(fin);
 }
 
-
-void wpisz(char *response, char *komenda)
+Mapa *wpisz(char *response, char *komenda)
 {
     Mapa * odpowiedz;
     if(strcmp(komenda, "explore")==0){
@@ -211,6 +212,7 @@ void wpisz(char *response, char *komenda)
         }
     }
     
+    return odpowiedz;
 }
 
 void wyzeruj()
