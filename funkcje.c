@@ -16,6 +16,8 @@ Mapa *parameters(const char * const korzen, char *komenda)
     const cJSON *direction = NULL;
     const cJSON *name1 = NULL;
     const cJSON *name2 = NULL;
+    const cJSON *name3 = NULL;
+    const cJSON *puste1 = NULL;
     const cJSON *step = NULL;
     const cJSON *field_type = NULL;
     const cJSON *field_bonus = NULL;
@@ -48,7 +50,7 @@ Mapa *parameters(const char * const korzen, char *komenda)
     {
         zodiak->status = status->valuestring;
     }
-
+    
     if(strcmp(komenda, "explore") == 0)
     {
         payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
@@ -61,6 +63,41 @@ Mapa *parameters(const char * const korzen, char *komenda)
         zodiak->x3 = atoi(cJSON_Print(payload->child->child->next->next->child));
         zodiak->y3 = atoi(cJSON_Print(payload->child->child->next->next->child->next));
         zodiak->type3 = cJSON_Print(payload->child->child->next->next->child->next->next);
+        
+        //payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
+        // cJSON_ArrayForEach(name1, payload)
+        //{
+            // list = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "list");
+            
+            //     puste1 = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "\n");
+            //     cJSON_ArrayForEach(name1, puste1)
+            //     {
+            //         cJSON *x1 = cJSON_GetObjectItemCaseSensitive(puste1, "x");
+            //         zodiak->x1 = x1->valueint;
+            //     }
+                // zodiak->x1 = atoi(cJSON_Print(puste1->child));
+                // zodiak->y1 = atoi(cJSON_Print(puste1->child->next));
+                // zodiak->type1 = cJSON_Print(puste1->child->next->next);
+
+                // zodiak->x2 = atoi(cJSON_Print(puste1->next->child));
+                // zodiak->y2 = atoi(cJSON_Print(puste1->next->child->next));
+                // zodiak->type2 = cJSON_Print(puste1->next->child->next->next);
+
+                // zodiak->x3 = atoi(cJSON_Print(puste1->next->next->child));
+                // zodiak->y3 = atoi(cJSON_Print(puste1->next->next->child->next));
+                // zodiak->type3 = cJSON_Print(puste1->next->next->child->next->next);
+                
+                // printf("%d\n", zodiak->x1);
+                
+            //cJSON_ArrayForEach(name2, list)
+            //{
+                //puste1 = cJSON_GetObjectItemCaseSensitive(list, "");
+                //cJSON_ArrayForEach(name3, puste1)
+                //{
+                    
+                //}
+            //}
+        //}
         
     }
     else

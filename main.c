@@ -37,7 +37,7 @@ int main(int argc, char **argv)
         }
         if(i == (argc-1))
         {
-            narysuj_swiat();
+            //narysuj_swiat();
         }
     }
 
