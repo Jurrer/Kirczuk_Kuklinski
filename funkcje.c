@@ -4,7 +4,7 @@
 
 Mapa *parameters(const char * const korzen, char *komenda)
 {
-    Mapa *zodiak;
+    Mapa *zodiak = (Mapa*) malloc(sizeof(Mapa));
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
     const cJSON *x = NULL;
@@ -167,7 +167,7 @@ void zapisz()
 
 Mapa *wpisz(char *response, char *komenda)
 {
-    Mapa * odpowiedz;
+    Mapa * odpowiedz = (Mapa*) malloc(sizeof(Mapa));
     if(strcmp(komenda, "explore")==0){
     odpowiedz = parameters(response, komenda);
         if(strcmp(odpowiedz->type1, "\"wall\"") == 0){

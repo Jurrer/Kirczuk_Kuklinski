@@ -29,4 +29,4 @@ clean:
 	rm -f *.a
 
 auto:main_auto.a
-	./main_auto.a qwerty_18
+	valgrind ./main_auto.a qwerty_18
