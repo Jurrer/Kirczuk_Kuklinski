@@ -4,7 +4,7 @@
 
 Mapa *parameters(const char * const korzen, char *komenda)
 {
-    Mapa *zodiak;
+    Mapa *zodiak = (Mapa*) malloc(sizeof(Mapa));
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
     const cJSON *x = NULL;
@@ -16,6 +16,7 @@ Mapa *parameters(const char * const korzen, char *komenda)
     const cJSON *direction = NULL;
     const cJSON *name1 = NULL;
     const cJSON *name2 = NULL;
+    const cJSON *name3 = NULL;
     const cJSON *step = NULL;
     const cJSON *field_type = NULL;
     const cJSON *field_bonus = NULL;
@@ -31,6 +32,7 @@ Mapa *parameters(const char * const korzen, char *komenda)
 
     int statuskodu = 0;
     
+    
     cJSON *korzen_cjson = cJSON_Parse(korzen);
     if (korzen_cjson == NULL)
     {
@@ -42,12 +44,15 @@ Mapa *parameters(const char * const korzen, char *komenda)
         statuskodu = 0;
     }
 
+    
+
 
     status = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "status");
     if (cJSON_IsString(status) && (status->valuestring != NULL))
     {
         zodiak->status = status->valuestring;
     }
+    
 
     if(strcmp(komenda, "explore") == 0)
     {
@@ -61,6 +66,41 @@ Mapa *parameters(const char * const korzen, char *komenda)
         zodiak->x3 = atoi(cJSON_Print(payload->child->child->next->next->child));
         zodiak->y3 = atoi(cJSON_Print(payload->child->child->next->next->child->next));
         zodiak->type3 = cJSON_Print(payload->child->child->next->next->child->next->next);
+        
+        //payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
+        // cJSON_ArrayForEach(name1, payload)
+        //{
+            // list = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "list");
+            
+            //     puste1 = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "\n");
+            //     cJSON_ArrayForEach(name1, puste1)
+            //     {
+            //         cJSON *x1 = cJSON_GetObjectItemCaseSensitive(puste1, "x");
+            //         zodiak->x1 = x1->valueint;
+            //     }
+                // zodiak->x1 = atoi(cJSON_Print(puste1->child));
+                // zodiak->y1 = atoi(cJSON_Print(puste1->child->next));
+                // zodiak->type1 = cJSON_Print(puste1->child->next->next);
+
+                // zodiak->x2 = atoi(cJSON_Print(puste1->next->child));
+                // zodiak->y2 = atoi(cJSON_Print(puste1->next->child->next));
+                // zodiak->type2 = cJSON_Print(puste1->next->child->next->next);
+
+                // zodiak->x3 = atoi(cJSON_Print(puste1->next->next->child));
+                // zodiak->y3 = atoi(cJSON_Print(puste1->next->next->child->next));
+                // zodiak->type3 = cJSON_Print(puste1->next->next->child->next->next);
+                
+                // printf("%d\n", zodiak->x1);
+                
+            //cJSON_ArrayForEach(name2, list)
+            //{
+                //puste1 = cJSON_GetObjectItemCaseSensitive(list, "");
+                //cJSON_ArrayForEach(name3, puste1)
+                //{
+                    
+                //}
+            //}
+        //}
         
     }
     else
@@ -97,7 +137,6 @@ Mapa *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }
 
-
 void narysuj_swiat()
 {
     int i,j;
@@ -126,10 +165,9 @@ void zapisz()
     fclose(fin);
 }
 
-
-void wpisz(char *response, char *komenda)
+Mapa *wpisz(char *response, char *komenda)
 {
-    Mapa * odpowiedz;
+    Mapa * odpowiedz = (Mapa*) malloc(sizeof(Mapa));
     if(strcmp(komenda, "explore")==0){
     odpowiedz = parameters(response, komenda);
         if(strcmp(odpowiedz->type1, "\"wall\"") == 0){
@@ -174,6 +212,7 @@ void wpisz(char *response, char *komenda)
         }
     }
     
+    return odpowiedz;
 }
 
 void wyzeruj()
