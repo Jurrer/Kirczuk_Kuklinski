@@ -3,13 +3,13 @@
 
 
 #include <curl/curl.h>
-#include "../cJSON/cJSON.h"
+#include "../../cJSON/cJSON.h"
 #include <string.h>
 #include<stdlib.h>
 
-#define Rozmiar 50
+#define MAX 50
 
-char swiat[Rozmiar][Rozmiar];
+char swiat[MAX][MAX];
 
 
 typedef struct _Mapa {

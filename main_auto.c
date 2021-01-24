@@ -1,5 +1,5 @@
-#include"komunikacja.h"
-#include"funkcje.h"
+#include"header/komunikacja.h"
+#include"header/funkcje.h"
 #include<stdlib.h>
 
 char *make_move(const char *token)

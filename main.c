@@ -1,5 +1,5 @@
-#include "funkcje.h"
-#include "komunikacja.h"
+#include "header/funkcje.h"
+#include "header/komunikacja.h"
 
 
 int main(int argc, char **argv)

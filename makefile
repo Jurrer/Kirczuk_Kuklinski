@@ -1,21 +1,26 @@
-DEPS=main_auto.o komunikacja.o funkcje.o
+DEPS=main.o main_auto.o komunikacja.o funkcje.o
 
-all: $(DEPS)
-	cc $(DEPS) -o main_auto.a -lcurl ../cJSON/cJSON.o
+all:kompiluj
 
 %.o:%.c
 	cc -c $^ -o $@
 
-lewo:main.a
+kompiluj: $(DEPS)
+	cc main_auto.o komunikacja.o funkcje.o -o main_auto.a -lcurl ../cJSON/cJSON.o
+
+komp: $(DEPS)
+	cc main.o komunikacja.o funkcje.o -o main.a -lcurl ../cJSON/cJSON.o
+
+lewo:komp
 	./main.a qwerty_16 left 
 
-prawo:main.a
+prawo:komp
 	./main.a qwerty_16 right
 
-explore:main.a
+explore:komp
 	./main.a qwerty_18 explore
 
-info:main.a
+info:komp
 	./main.a qwerty_16 info
 
 move:main_auto.a
@@ -25,8 +30,8 @@ duzo:main.a
 	./main.a qwerty_16 left right move explore move right left info move 
 
 clean:
-	rm -f main.a
 	rm -f *.a
+	rm -f *.o
 
-auto:main_auto.a
+auto:kompiluj
 	valgrind ./main_auto.a qwerty_18

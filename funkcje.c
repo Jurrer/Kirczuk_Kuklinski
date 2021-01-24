@@ -1,5 +1,4 @@
-#include "funkcje.h"
-
+#include "header/funkcje.h"
 
 
 Mapa *parameters(const char * const korzen, char *komenda)
@@ -140,9 +139,9 @@ Mapa *parameters(const char * const korzen, char *komenda)
 void narysuj_swiat()
 {
     int i,j;
-    for(i=0; i<Rozmiar; i++)
+    for(i=0; i<MAX; i++)
     {
-    for(j=0; j<Rozmiar; j++)
+    for(j=0; j<MAX; j++)
     {
         printf("%c", swiat[i][j]);
     }
