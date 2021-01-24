@@ -33,5 +33,10 @@ clean:
 	rm -f *.a
 	rm -f *.o
 
+<<<<<<< HEAD
 auto:kompiluj
 	valgrind ./main_auto.a qwerty_18
+=======
+auto:main_auto.a
+	./main_auto.a qwerty_18
+>>>>>>> 4de20695f4bef836fbd71fa62fbcc32cc024f41d
