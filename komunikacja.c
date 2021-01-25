@@ -74,12 +74,41 @@ char *make_request(char *url)
     return chunk.response;
 }
 
+
+char *url(char * action, const char *token)
+{
+    if(strcmp(action, "info") == 0)
+        {
+            char *odpowiedz_json = info(token);
+            wpisz(odpowiedz_json, "info");
+        }
+    if(strcmp(action, "explore") == 0)
+        {
+            char *odpowiedz_json = explore(token);
+            wpisz(odpowiedz_json, "explore");
+        }
+    if(strcmp(action, "right") == 0)
+        {
+            char *odpowiedz_json = right(token);
+            wpisz(odpowiedz_json, "right");
+        }
+    if(strcmp(action, "move") == 0)
+        {
+            char *odpowiedz_json = move(token);
+            wpisz(odpowiedz_json, "move");
+        }
+    if(strcmp(action, "left") == 0)
+        {
+            char *odpowiedz_json = left(token);
+            wpisz(odpowiedz_json, "left");
+        }   
+}
+
 char *info(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
     strcat(url, token);
     char *response_json = make_request(url);
     return response_json;
-
 }
 
 char *move(const char *token) {

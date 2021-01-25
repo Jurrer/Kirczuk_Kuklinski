@@ -32,6 +32,13 @@ duzo:main.a
 clean:
 	rm -f *.a
 	rm -f *.o
+	rm -f test/*.a
+	rm -f test/*.o
 
 auto:kompiluj
 	valgrind ./main_auto.a qwerty_18
+
+map:test/mapa_t.o
+	cc test/mapa_t.o -o test/mapa_t.a ../cJSON/cJSON.o
+	./test/mapa_t.a
+	
