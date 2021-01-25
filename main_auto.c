@@ -1,6 +1,8 @@
 #include"header/komunikacja.h"
 #include"header/funkcje.h"
 #include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
 
 char *make_move(const char *token)
 {
@@ -37,7 +39,7 @@ char *make_explore(const char *token)
     return odpowiedz_json;
 }
 
-int szukaj_obwiedni(Mapa *m, char *odp, const char *token)
+int szukaj_obwiedni(Odp *m, char *odp, const char *token)
 {
     int wynik = 0;
     int l = 0;
@@ -47,10 +49,13 @@ int szukaj_obwiedni(Mapa *m, char *odp, const char *token)
     int x_stare = 0;
     int y_stare = 0;
     int ruszyl = 0;
-
+    char pom1[8];
+    char pom2[8];
+    char dir[3];
+    
+    
     odp = make_explore(token);
     m = parameters(odp, "explore");
-    printf("%s\n", m->type2);
 
     while(strcmp(m->type2, "\"wall\"") != 0)
     {
@@ -59,51 +64,79 @@ int szukaj_obwiedni(Mapa *m, char *odp, const char *token)
         odp = make_explore(token);
         m = parameters(odp, "explore");
     }
+
+    odp = make_left(token);
+    odp = make_explore(token);
+    m = parameters(odp, "explore");
+
+    if((strcmp(m->type2, "\"wall\"") == 0))
+    {
+        r++;
+    }
+    else;
     
+    odp = make_right(token);
     odp = make_right(token);
     m = parameters(odp, "right");
 
-    odp = make_info(token);
-    m = parameters(odp, "info");
-    
     x_poczatkowe = m->current_x;
     y_poczatkowe = m->current_y;
 
-    odp = make_move(token);
-    m = parameters(odp, "move");
-
-    while(m->current_x != x_poczatkowe || m->current_y != y_poczatkowe)
+    while(m->current_x != x_poczatkowe || m->current_y != y_poczatkowe || ruszyl == 0)
     {
+        ruszyl = 1;
+        
+        odp = make_info(token);
+        m = parameters(odp, "info");
+
+        strcpy(dir, m->direction);
+        
         odp = make_explore(token);
         m = parameters(odp, "explore");
+        
+        if(strcmp(dir, "E") == 0 || strcmp(dir, "W") == 0)
+        {
+            strcpy(pom1, m->type1);
+            strcpy(pom2, m->type3);
 
-        if((strcmp(m->type1, "\"wall\"") != 0) && (strcmp(m->type2, "\"wall\"") != 0))
+            strcpy(m->type1, pom2);
+            strcpy(m->type3, pom1);
+        }
+        else;
+
+        if((strcmp(m->type3, "\"wall\"") != 0) && (strcmp(m->type2, "\"wall\"") != 0))
         {
             odp = make_move(token);
-            m = parameters(odp, "move");
 
             odp = make_left(token);
-            m = parameters(odp, "left");
 
             l++;
         }
         else if((strcmp(m->type2, "\"wall\"") != 0))
         {
             odp = make_move(token);
-            m = parameters(odp, "move");
-
         }
         else if((strcmp(m->type2, "\"wall\"") == 0))
         {
             odp = make_right(token);
-            m = parameters(odp, "right");
+
             r++;
         }
 
+        odp = make_info(token);
+        m = parameters(odp, "info");
+
+        system("clear");
+        printf("Szukanie w toku...\n");
     }
 
-    wynik = l-r;
-    printf("%d\n", wynik);
+    wynik = r-l;
+
+    if(wynik == 4)
+        return wynik;
+
+    else
+        wynik = szukaj_obwiedni(m, odp, token);
 
     return wynik;
 }
@@ -113,7 +146,7 @@ int main(int argc, char **argv)
     wyzeruj();
 
     const char *token = argv[1];
-    Mapa *m = (Mapa*) malloc(sizeof(Mapa));
+    Odp *m = (Odp*) malloc(sizeof(Odp));
     char *odp;
     int obw = 0; //zmienna definiująca czy znalezliśmy obwiednię
 
@@ -122,6 +155,6 @@ int main(int argc, char **argv)
     zapisz();
     
     
-
+    free(m);
     return 0;
 }

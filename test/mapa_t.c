@@ -54,7 +54,7 @@ odp *parameters(const char * const korzen, char *komenda)
         char *bufer;
         bufer = cJSON_Print(payload->child->child->child->next->next);
         printf("%s", bufer);
-        zodiak->type[0] = "bufer";
+        zodiak->type[0][200] = "bufer";
         zodiak->x[1] = atoi(cJSON_Print(payload->child->child->next->child));
         zodiak->y[1] = atoi(cJSON_Print(payload->child->child->next->child->next));
         zodiak->type[1][200] = cJSON_Print(payload->child->child->next->child->next->next);

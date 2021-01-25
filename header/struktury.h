@@ -13,10 +13,12 @@ typedef struct _Odp
     int step;
     char *field_type;
     char *field_bonus;    
-    int x[3];
-    int y[3];
-    char type[200][3];
-} odp;
+    int x[4];
+    int y[4];
+    char *type1;
+    char *type2;
+    char *type3;
+} Odp;
 
 typedef struct _Field
 {   
@@ -29,6 +31,6 @@ typedef struct _Field
     int rozmiar_y;
     char *dir;
     char *field;
-} field;
+} Field;
 
 #endif
