@@ -1,9 +1,9 @@
 #include "header/funkcje.h"
 
 
-Mapa *parameters(const char * const korzen, char *komenda)
+Odp *parameters(const char * const korzen, char *komenda)
 {
-    Mapa *zodiak = (Mapa*) malloc(sizeof(Mapa));
+    Odp *zodiak = (Odp*) malloc(sizeof(Odp));
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
     const cJSON *x = NULL;
@@ -164,9 +164,9 @@ void zapisz()
     fclose(fin);
 }
 
-odp *wpisz(char *response, char *komenda)
+Odp *wpisz(char *response, char *komenda)
 {
-    odp * odpowiedz = (odp*) malloc(sizeof(odp));
+    Odp * odpowiedz = (Odp*) malloc(sizeof(Odp));
     if(strcmp(komenda, "explore")==0){
     odpowiedz = parameters(response, komenda);
         if(strcmp(odpowiedz->type1, "\"wall\"") == 0){

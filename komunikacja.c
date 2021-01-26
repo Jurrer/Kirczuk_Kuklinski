@@ -69,11 +69,10 @@ char *make_request(char *url)
         /* zawsze po sobie sprzątaj */
         //free(chunk.response);
         curl_easy_cleanup(curl);
-        printf("%s\n", chunk.response);
+        //printf("%s\n", chunk.response);
     }
     return chunk.response;
 }
-
 
 char *url(char * action, const char *token)
 {

@@ -6,14 +6,15 @@
 #include "../../cJSON/cJSON.h"
 #include <string.h>
 #include<stdlib.h>
-#include "struktury.h"
+#include<stdio.h>
+//#include "struktury.h"
 
 #define MAX 50
 
 char swiat[MAX][MAX];
 
-/*
-typedef struct _Mapa {
+
+typedef struct _Odp {
     char *status;
     char *name;
     char *xyz;
@@ -33,14 +34,14 @@ typedef struct _Mapa {
     char *type1;
     char *type2;
     char *type3;
-}Mapa;
-*/
+}Odp;
 
-field *parameters(const char * const korzen, char *komenda);
+
+Odp *parameters(const char * const korzen, char *komenda);
 
 void wyzeruj();
 
-field *wpisz(char *response, char *komenda);
+Odp *wpisz(char *response, char *komenda);
 
 void zapisz();
 
