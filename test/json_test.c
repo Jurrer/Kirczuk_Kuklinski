@@ -155,7 +155,9 @@ void main(int argc, char **argv)
     char buffer[2048];
 
     for(int i = 1; i<argc; i++){
+        
         field *info = alloc(info);
+
         if(!strcmp(argv[i], "info") || !strcmp(argv[i], "left") || !strcmp(argv[i], "move") || !strcmp(argv[i], "right") || !strcmp(argv[i], "explore") ){
             
             char nazwa[50] = {"../json/"};

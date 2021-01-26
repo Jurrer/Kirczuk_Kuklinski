@@ -8,7 +8,7 @@ all:complex_test
 	cc -c $^ -o $@
 
 kompiluj: $(DEPS)
-	cc mapa_t.o -o mapa_t.a ../../cJSON/cJSON.o
+	#cc mapa_t.o -o mapa_t.a ../../cJSON/cJSON.o
 	cc json_test.o -o json_test.a ../../cJSON/cJSON.o
 
 complex_test:kompiluj
