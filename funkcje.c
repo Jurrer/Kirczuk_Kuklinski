@@ -136,11 +136,16 @@
     return zodiak;
 }*/
 
-//field *alloc(field * ala);
 
 field *parameters(const char * const korzen, char *komenda)
 {
-    field *zodiak = alloc(zodiak);
+    //field *zodiak = alloc(zodiak);
+    // field *zodiak = (field*) malloc(sizeof(field));
+    // zodiak->response = (odp*) malloc(sizeof(odp));
+    // zodiak->pole[0] = (expl*) malloc(sizeof(expl));
+    // zodiak->pole[1] = (expl*) malloc(sizeof(expl));
+    // zodiak->pole[2] = (expl*) malloc(sizeof(expl));
+    field *zodiak = calloc(1, sizeof(field));
 
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
@@ -260,14 +265,14 @@ field *parameters(const char * const korzen, char *komenda)
 }
 
 field *alloc(field * ala){
-    ala = (field*) malloc(sizeof(field)*2);
-    ala->response = (odp*) malloc(sizeof(odp)*2);
-    ala->pole[0] = (expl*) malloc(sizeof(expl)*2);
-    ala->pole[1] = (expl*) malloc(sizeof(expl)*2);
-    ala->pole[2] = (expl*) malloc(sizeof(expl)*2);
+    ala = (field*) calloc(1,sizeof(field));
+   //ala->response = (odp*) calloc(1,sizeof(odp));
+   //ala->pole[0] = (expl*) calloc(1,sizeof(expl));
+   //ala->pole[1] = (expl*) calloc(1,sizeof(expl));
+   //ala->pole[2] = (expl*) calloc(1,sizeof(expl));
     return ala;
 }
-
+/*
 void freeee(field *alama){
     free(alama->pole[0]);
     free(alama->pole[1]);
@@ -275,6 +280,7 @@ void freeee(field *alama){
     free(alama->response);
     free(alama);
 }
+*/
 
 void narysuj_swiat()
 {
@@ -304,54 +310,58 @@ void zapisz()
     fclose(fin);
 }
 
-field *wpisz(char *response, char *komenda)
+void wpisz(char *response, char *komenda)
 {
-    field * odpowiedz = alloc(odpowiedz);
+    field *odpowiedz = calloc(1, sizeof(field));
+    field *odpowiedz1 = calloc(1, sizeof(field));
     if(strcmp(komenda, "explore")==0){
-    odpowiedz = parameters(response, komenda);
-        if(strcmp(odpowiedz->pole[0]->type, "\"wall\"") == 0){
-            swiat[odpowiedz->pole[0]->x][odpowiedz->pole[0]->y] = 'X';
-        }
-        if(strcmp(odpowiedz->pole[0]->type, "\"grass\"") == 0){
-            swiat[odpowiedz->pole[0]->x][odpowiedz->pole[0]->y] = 'g';
-        }
-        if(strcmp(odpowiedz->pole[0]->type, "\"sand\"") == 0){
-            swiat[odpowiedz->pole[0]->x][odpowiedz->pole[0]->y] = 's';
-        }
-        if(strcmp(odpowiedz->pole[1]->type, "\"wall\"") == 0){
-            swiat[odpowiedz->pole[1]->x][odpowiedz->pole[1]->y] = 'X';
-        }
-        if(strcmp(odpowiedz->pole[1]->type, "\"grass\"") == 0){
-            swiat[odpowiedz->pole[1]->x][odpowiedz->pole[1]->y] = 'g';
-        }
-        if(strcmp(odpowiedz->pole[1]->type, "\"sand\"") == 0){
-            swiat[odpowiedz->pole[1]->x][odpowiedz->pole[1]->y] = 's';
-        }
-
-        if(strcmp(odpowiedz->pole[2]->type, "\"wall\"") == 0){
-            swiat[odpowiedz->pole[2]->x][odpowiedz->pole[2]->y] = 'X';
-        }
-        if(strcmp(odpowiedz->pole[2]->type, "\"grass\"") == 0){
-            swiat[odpowiedz->pole[2]->x][odpowiedz->pole[2]->y] = 'g';
-        }
-        if(strcmp(odpowiedz->pole[2]->type, "\"sand\"") == 0){
-            swiat[odpowiedz->pole[2]->x][odpowiedz->pole[2]->y] = 's';
-        }
+        odpowiedz = parameters(response, komenda);
+            if(strcmp(odpowiedz->pole[0]->type, "\"wall\"") == 0){
+                swiat[odpowiedz->pole[0]->x][odpowiedz->pole[0]->y] = 'X';
+            }
+            if(strcmp(odpowiedz->pole[0]->type, "\"grass\"") == 0){
+                swiat[odpowiedz->pole[0]->x][odpowiedz->pole[0]->y] = 'g';
+            }
+            if(strcmp(odpowiedz->pole[0]->type, "\"sand\"") == 0){
+                swiat[odpowiedz->pole[0]->x][odpowiedz->pole[0]->y] = 's';
+            }
+            if(strcmp(odpowiedz->pole[1]->type, "\"wall\"") == 0){
+                swiat[odpowiedz->pole[1]->x][odpowiedz->pole[1]->y] = 'X';
+            }
+            if(strcmp(odpowiedz->pole[1]->type, "\"grass\"") == 0){
+                swiat[odpowiedz->pole[1]->x][odpowiedz->pole[1]->y] = 'g';
+            }
+            if(strcmp(odpowiedz->pole[1]->type, "\"sand\"") == 0){
+                swiat[odpowiedz->pole[1]->x][odpowiedz->pole[1]->y] = 's';
+            }
+            if(strcmp(odpowiedz->pole[2]->type, "\"wall\"") == 0){
+                swiat[odpowiedz->pole[2]->x][odpowiedz->pole[2]->y] = 'X';
+            }
+            if(strcmp(odpowiedz->pole[2]->type, "\"grass\"") == 0){
+                swiat[odpowiedz->pole[2]->x][odpowiedz->pole[2]->y] = 'g';
+            }
+            if(strcmp(odpowiedz->pole[2]->type, "\"sand\"") == 0){
+                swiat[odpowiedz->pole[2]->x][odpowiedz->pole[2]->y] = 's';
+            }
     }
     else
     {
-        odpowiedz = parameters(response, komenda);
-        if(strcmp(odpowiedz->response->field_type, "grass") == 0)
+        odpowiedz1 = parameters(response, komenda);
+        if(strcmp(odpowiedz1->response->field_type, "grass") == 0)
         {
-            swiat[odpowiedz->response->current_x][odpowiedz->response->current_y] = 'g';
+            swiat[odpowiedz1->response->current_x][odpowiedz1->response->current_y] = 'g';
         }
-        if(strcmp(odpowiedz->response->field_type, "sand") == 0)
+        if(strcmp(odpowiedz1->response->field_type, "sand") == 0)
         {
-            swiat[odpowiedz->response->current_x][odpowiedz->response->current_y] = 's';
+            swiat[odpowiedz1->response->current_x][odpowiedz1->response->current_y] = 's';
         }
     }
     
-    return odpowiedz;
+    // free(odpowiedz->pole[0]);
+    // free(odpowiedz->pole[1]);
+    // free(odpowiedz->pole[2]);
+    // free(odpowiedz->response);
+    //free(odpowiedz);
 }
 
 void wyzeruj()

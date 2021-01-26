@@ -45,7 +45,7 @@ void freeee(field * alama);
 
 void wyzeruj();
 
-field *wpisz(char *response, char *komenda);
+void wpisz(char *response, char *komenda);
 
 void zapisz();
 
