@@ -6,8 +6,8 @@
 #include<stdlib.h>
 #include<string.h>
 
-#define M 5
-#define U 2
+#define M 10
+#define U 3
 
 void wypisz(){
     ;
