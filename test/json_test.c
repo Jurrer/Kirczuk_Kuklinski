@@ -1,5 +1,5 @@
-#include "../header/funkcje.h"
-#include "../header/komunikacja.h"
+//#include "../header/funkcje.h"
+//#include "../header/komunikacja.h"
 #include"../header/struktury.h"
 #include "../../cJSON/cJSON.h"
 #include <stdio.h>
@@ -150,6 +150,7 @@ void freeee(field *alama){
 
 void main(int argc, char **argv)
 {
+
 
     char buffer[2048];
 
