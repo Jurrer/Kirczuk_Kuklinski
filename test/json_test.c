@@ -147,7 +147,6 @@ void freeee(field *alama){
     free(alama);
 }
 
-
 void main(int argc, char **argv)
 {
 
@@ -181,6 +180,6 @@ void main(int argc, char **argv)
                     printf("Command %s:\n\n", "explore");
                     printf("Info:\n%s\n %d\n %d\n %s\n %d\n %d\n %s\n %d\n %d\n %s\n\n",info->pole[0]->status, info->pole[0]->x, info->pole[0]->y, info->pole[0]->type, info->pole[1]->x, info->pole[1]->y, info->pole[1]->type, info->pole[2]->x, info->pole[2]->y, info->pole[2]->type);
             }
-        }    
-    }   
+        }
+    }  
 }

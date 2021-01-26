@@ -65,11 +65,10 @@ char *make_request(char *url)
         if (res != CURLE_OK) {
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
-
         /* zawsze po sobie sprzątaj */
         //free(chunk.response);
+        printf("%s", chunk.response);
         curl_easy_cleanup(curl);
-        //printf("%s\n", chunk.response);
     }
     return chunk.response;
 }
