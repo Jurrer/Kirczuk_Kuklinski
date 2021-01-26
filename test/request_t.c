@@ -1,4 +1,5 @@
-#include "header/komunikacja.h"
+#include "../header/komunikacja.h"
+#include "../header/struktury.h"
 
 static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
 {
@@ -74,75 +75,87 @@ char *make_request(char *url)
     return chunk.response;
 }
 
-char *url(char * action, const char *token)
+char* concat(const char *s1, const char *s2)
 {
-    if(strcmp(action, "info") == 0)
-        {
-            char *odpowiedz_json = info(token);
-            wpisz(odpowiedz_json, "info");
-        }
-    if(strcmp(action, "explore") == 0)
-        {
-            char *odpowiedz_json = explore(token);
-            wpisz(odpowiedz_json, "explore");
-        }
-    if(strcmp(action, "right") == 0)
-        {
-            char *odpowiedz_json = right(token);
-            wpisz(odpowiedz_json, "right");
-        }
-    if(strcmp(action, "move") == 0)
-        {
-            char *odpowiedz_json = move(token);
-            wpisz(odpowiedz_json, "move");
-        }
-    if(strcmp(action, "left") == 0)
-        {
-            char *odpowiedz_json = left(token);
-            wpisz(odpowiedz_json, "left");
-        }   
+    char *result = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
+    // in real code you would check for errors in malloc here
+    strcpy(result, s1);
+    strcat(result, s2);
+    return result;
 }
 
-char *info(const char *token) {
-    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
-    strcat(url, token);
-    char *response_json = make_request(url);
-    return response_json;
-}
 
-char *move(const char *token) {
-    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/";
-    strcat(url, token);
-    char *response_json = make_request(url);
-    return response_json;
-}
+char *url(const char * token, const char * action){
 
-char *explore(const char *token) {
-    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/";
-    strcat(url, token);
-    char *response_json = make_request(url);
-    return response_json;
-}
+    char *url = {"http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/"};
+    char * wynik;
+    char * nazwa;
 
-char *left(const char *token) {
-    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
-    strcat(url, token);
-    strcat(url, "/left");
-    char *response_json = make_request(url);
-    return response_json;
-}
+    if(!strcmp(action, "info") || !strcmp(action, "move") || !strcmp(action, "explore")){
 
-char *right(const char *token) {
-    char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
-    strcat(url, token);
-    strcat(url, "/right");
-    char *response_json = make_request(url);
-    return response_json;
-}
-
-void main (int argc, char**argv){
-    char * token = {"qwerty_16"};
-        for(int i = 2; i<argc; i++){
-        (url(argv[i], token));
+        nazwa = concat(url, token);
+        concat(nazwa, "/");
+        //strcat(nazwa, action);
+        //strcat(nazwa, "right");
     }
+    if(!strcmp(action, "left") || !strcmp(action, "right")){
+        
+        //strcat(nazwa, "rotate/");
+        //strcat(nazwa, token);
+        //strcat(nazwa, "/");
+        //strcat(nazwa, action);
+    }
+    return nazwa;
 }
+
+void main(int argc, char ** argv){  
+    char *a = url(argv[1], argv[2]);
+
+    printf("%s\n", a);
+
+    for(int i = 2; i<argc; i++){
+
+            
+            //char * buffer[2048] = make_request(url(argv[1], argv[2]));
+
+            }
+}
+
+
+// //////////////////////////
+//     for(int i=2; i<argc;i++)
+//     {
+//         if(strcmp(argv[i], "info") == 0)
+//         {
+//             char *odpowiedz_json = info(token);
+//             wpisz(odpowiedz_json, "info");
+//         }
+//         if(strcmp(argv[i], "explore") == 0)
+//         {
+//             char *odpowiedz_json = explore(token);
+//             wpisz(odpowiedz_json, "explore");
+//         }
+//         if(strcmp(argv[i], "right") == 0)
+//         {
+//             char *odpowiedz_json = right(token);
+//             wpisz(odpowiedz_json, "right");
+//         }
+//         if(strcmp(argv[i], "move") == 0)
+//         {
+//             char *odpowiedz_json = move(token);
+//             wpisz(odpowiedz_json, "move");
+//         }
+//         if(strcmp(argv[i], "left") == 0)
+//         {
+//             char *odpowiedz_json = left(token);
+//             wpisz(odpowiedz_json, "left");
+//         }
+//         if(i == (argc-1))
+//         {
+//             narysuj_swiat();
+//         }
+//     }
+
+//     zapisz();
+
+//     return 0;
