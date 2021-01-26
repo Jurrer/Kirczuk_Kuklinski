@@ -15,11 +15,11 @@ int main(int argc, char **argv)
     char *odpo;
     int obw = 0; //zmienna definiująca czy znalezliśmy obwiednię
 
-    //obw = szukaj_obwiedni(m, odpo, token);
+    obw = szukaj_obwiedni(m, odpo, token);
 
-    obw = szukaj_granicy(m, odpo, token);
+    //obw = szukaj_granicy(m, odpo, token);
 
-    //printf("%d\n", obw);
+    printf("%d\n", obw);
 
     odpo = make_info(token);
     m = parameters(odpo, "info");
