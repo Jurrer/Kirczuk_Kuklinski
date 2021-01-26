@@ -33,9 +33,7 @@ typedef struct _Field
     int rozmiar_y;  //rozmiar naszej planszy
     char *dir;      //zwrot czołgu
     char *komenda;
-    expl *pole1;
-    expl *pole2;
-    expl *pole3;
+    expl *pole[2];
     odp *response;
 }field;
 

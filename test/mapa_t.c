@@ -13,9 +13,9 @@ field *parameters(const char * const korzen, char *komenda)
 {
     field *zodiak = (field*) malloc(sizeof(field));
     zodiak->response = (odp*) malloc(sizeof(odp));
-    zodiak->pole1 = (expl*) malloc(sizeof(expl));
-    zodiak->pole2 = (expl*) malloc(sizeof(expl));    
-    zodiak->pole3 = (expl*) malloc(sizeof(expl));
+    zodiak->pole[0] = (expl*) malloc(sizeof(expl));
+    zodiak->pole[1] = (expl*) malloc(sizeof(expl));    
+    zodiak->pole[2] = (expl*) malloc(sizeof(expl));
 
     const cJSON *status = NULL;
     const cJSON *payload = NULL;
@@ -50,21 +50,21 @@ field *parameters(const char * const korzen, char *komenda)
     if (cJSON_IsString(status) && (status->valuestring != NULL))
     {
         zodiak->response->status = status->valuestring;
-        zodiak->pole1->status = status->valuestring;
+        zodiak->pole[0]->status = status->valuestring;
     }
     
     
     if(strcmp(komenda, "explore") == 0){
         payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
-        zodiak->pole1->x = atoi(cJSON_Print(payload->child->child->child));
-        zodiak->pole1->y = atoi(cJSON_Print(payload->child->child->child->next));
-        zodiak->pole1->type = cJSON_Print(payload->child->child->child->next->next);
-        zodiak->pole2->x = atoi(cJSON_Print(payload->child->child->next->child));
-        zodiak->pole2->y = atoi(cJSON_Print(payload->child->child->next->child->next));
-        zodiak->pole2->type = cJSON_Print(payload->child->child->next->child->next->next);
-        zodiak->pole3->x = atoi(cJSON_Print(payload->child->child->next->next->child));
-        zodiak->pole3->y = atoi(cJSON_Print(payload->child->child->next->next->child->next));
-        zodiak->pole3->type = cJSON_Print(payload->child->child->next->next->child->next->next);
+        zodiak->pole[0]->x = atoi(cJSON_Print(payload->child->child->child));
+        zodiak->pole[0]->y = atoi(cJSON_Print(payload->child->child->child->next));
+        zodiak->pole[0]->type = cJSON_Print(payload->child->child->child->next->next);
+        zodiak->pole[1]->x = atoi(cJSON_Print(payload->child->child->next->child));
+        zodiak->pole[1]->y = atoi(cJSON_Print(payload->child->child->next->child->next));
+        zodiak->pole[1]->type = cJSON_Print(payload->child->child->next->child->next->next);
+        zodiak->pole[2]->x = atoi(cJSON_Print(payload->child->child->next->next->child));
+        zodiak->pole[2]->y = atoi(cJSON_Print(payload->child->child->next->next->child->next));
+        zodiak->pole[2]->type = cJSON_Print(payload->child->child->next->next->child->next->next);
         
         //payload = cJSON_GetObjectItemCaseSensitive(korzen_cjson, "payload");
         // cJSON_ArrayForEach(name1, payload)
@@ -137,9 +137,9 @@ field *parameters(const char * const korzen, char *komenda)
 field *alloc(field * ala){
     ala = (field*) malloc(sizeof(field));
     ala->response = (odp*) malloc(sizeof(odp));
-    ala->pole1 = (expl*) malloc(sizeof(expl));
-    ala->pole2 = (expl*) malloc(sizeof(expl));
-    ala->pole3 = (expl*) malloc(sizeof(expl));
+    ala->pole[0] = (expl*) malloc(sizeof(expl));
+    ala->pole[1] = (expl*) malloc(sizeof(expl));
+    ala->pole[2] = (expl*) malloc(sizeof(expl));
     return ala;
 }
 
@@ -174,7 +174,7 @@ void main(int argc, char **argv)
 	fclose(f);
 printf("wok\n");
     explore = parameters(buffer, "explore");
-    printf("Info:\n%s\n %d\n %d\n %s\n %d\n %d\n %s\n %d\n %d\n %s\n",explore->pole1->status, explore->pole1->x, explore->pole1->y, explore->pole1->type, explore->pole2->x, explore->pole2->y, explore->pole2->type, explore->pole3->x, explore->pole3->y, explore->pole3->type);
+    printf("Info:\n%s\n %d\n %d\n %s\n %d\n %d\n %s\n %d\n %d\n %s\n",explore->pole[0]->status, explore->pole[0]->x, explore->pole[0]->y, explore->pole[0]->type, explore->pole[1]->x, explore->pole[1]->y, explore->pole[1]->type, explore->pole[2]->x, explore->pole[2]->y, explore->pole[2]->type);
     
     }    
     

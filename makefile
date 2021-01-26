@@ -1,4 +1,4 @@
-DEPS=main.o main_auto.o komunikacja.o funkcje.o
+DEPS= main_auto.o komunikacja.o funkcje.o
 
 all:kompiluj
 
@@ -36,7 +36,7 @@ clean:
 	rm -f test/*.o
 
 auto:kompiluj
-	valgrind ./main_auto.a qwerty_18
+	./main_auto.a qwerty_16
 
 map:test/mapa_t.o
 	cc test/mapa_t.o -o test/mapa_t.a ../cJSON/cJSON.o

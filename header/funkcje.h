@@ -2,9 +2,9 @@
 #define _FUNKCJE_H
 
 
-#include <curl/curl.h>
-#include "../../cJSON/cJSON.h"
-#include <string.h>
+#include<curl/curl.h>
+#include"../../cJSON/cJSON.h"
+#include<string.h>
 #include<stdlib.h>
 #include<stdio.h>
 //#include "struktury.h"

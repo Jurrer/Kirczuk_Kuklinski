@@ -2,9 +2,8 @@
 #define _KOMUNIKACJA_H
 
 #include <curl/curl.h>
-#include "../../cJSON/cJSON.h"
+//#include "../../cJSON/cJSON.h"
 #include <string.h>
-//#include "struktury.h"
 
 #include <stdio.h>
 #include <stdlib.h>

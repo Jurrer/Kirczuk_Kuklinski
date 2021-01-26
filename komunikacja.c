@@ -73,7 +73,7 @@ char *make_request(char *url)
     }
     return chunk.response;
 }
-
+/*
 char *url(char * action, const char *token)
 {
     if(strcmp(action, "info") == 0)
@@ -102,7 +102,7 @@ char *url(char * action, const char *token)
             wpisz(odpowiedz_json, "left");
         }   
 }
-
+*/
 char *info(const char *token) {
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
     strcat(url, token);
