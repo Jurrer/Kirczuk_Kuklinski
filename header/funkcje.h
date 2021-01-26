@@ -7,41 +7,45 @@
 #include<string.h>
 #include<stdlib.h>
 #include<stdio.h>
-//#include "struktury.h"
+#include "struktury.h"
 
 #define MAX 50
 
 char swiat[MAX][MAX];
 
 
-typedef struct _Odp {
-    char *status;
-    char *name;
-    char *xyz;
-    int current_x;
-    int current_y;
-    char *current_session;
-    char *direction;
-    int step;
-    char *field_type;
-    char *field_bonus;
-    int x1;
-    int y1;
-    int x2;
-    int y2;
-    int x3;
-    int y3;
-    char *type1;
-    char *type2;
-    char *type3;
-}Odp;
+// typedef struct _Odp {
+//     char *status;
+//     char *name;
+//     char *xyz;
+//     int current_x;
+//     int current_y;
+//     char *current_session;
+//     char *direction;
+//     int step;
+//     char *field_type;
+//     char *field_bonus;
+//     int x1;
+//     int y1;
+//     int x2;
+//     int y2;
+//     int x3;
+//     int y3;
+//     char *type1;
+//     char *type2;
+//     char *type3;
+// }Odp;
 
 
-Odp *parameters(const char * const korzen, char *komenda);
+field *parameters(const char * const korzen, char *komenda);
+
+field *alloc(field * ala);
+
+void freeee(field * alama);
 
 void wyzeruj();
 
-Odp *wpisz(char *response, char *komenda);
+field *wpisz(char *response, char *komenda);
 
 void zapisz();
 

@@ -7,6 +7,7 @@ all:kompiluj
 
 kompiluj: $(DEPS)
 	cc main_auto.o komunikacja.o funkcje.o -o main_auto.a -lcurl ../cJSON/cJSON.o
+	./main_auto.a qwerty_18
 
 komp: $(DEPS)
 	cc main.o komunikacja.o funkcje.o -o main.a -lcurl ../cJSON/cJSON.o
@@ -36,7 +37,7 @@ clean:
 	rm -f test/*.o
 
 auto:kompiluj
-	./main_auto.a qwerty_16
+	./main_auto.a qwerty_18
 
 map:test/mapa_t.o
 	cc test/mapa_t.o -o test/mapa_t.a ../cJSON/cJSON.o
