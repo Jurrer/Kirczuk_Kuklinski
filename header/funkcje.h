@@ -37,7 +37,7 @@ char swiat[MAX][MAX];
 // }Odp;
 
 
-field *parameters(const char * const korzen, char *komenda);
+odp *parameters(const char * const korzen, char *komenda);
 
 field *alloc(field * ala);
 
@@ -45,7 +45,7 @@ void freeee(field * alama);
 
 void wyzeruj();
 
-field *wpisz(char *response, char *komenda);
+void wpisz(char *response, char *komenda);
 
 void zapisz();
 

@@ -13,6 +13,8 @@ typedef struct _Odp
     int step;
     char *field_type;
     char *field_bonus;
+    int x1, y1, x2, y2, x3, y3;
+    char *type1, *type2, *type3;
 } odp;
 
 typedef struct _Expl{
