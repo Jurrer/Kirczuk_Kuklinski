@@ -1,4 +1,4 @@
-DEPS= main_auto.o komunikacja.o funkcje.o
+DEPS= main_auto.o komunikacja.o funkcje.o automat.o
 
 all:kompiluj
 
@@ -6,11 +6,11 @@ all:kompiluj
 	cc -c $^ -o $@
 
 kompiluj: $(DEPS)
-	cc main_auto.o komunikacja.o funkcje.o -o main_auto.a -lcurl ../cJSON/cJSON.o
+	cc main_auto.o komunikacja.o funkcje.o automat.o -o main_auto.a -lcurl ../cJSON/cJSON.o
 	./main_auto.a qwerty_18
 
 komp: $(DEPS)
-	cc main.o komunikacja.o funkcje.o -o main.a -lcurl ../cJSON/cJSON.o
+	cc main.o komunikacja.o funkcje.o automat.o -o main.a -lcurl ../cJSON/cJSON.o
 
 lewo:komp
 	./main.a qwerty_16 left 

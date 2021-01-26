@@ -350,6 +350,7 @@ void wpisz(char *response, char *komenda)
             swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
         }
     }
+    free(odpowiedz);
 }
 
 void wyzeruj()
