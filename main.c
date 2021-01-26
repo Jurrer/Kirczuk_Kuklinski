@@ -9,10 +9,6 @@ int main(int argc, char **argv)
 
     const char *token= argv[1];    
 
-    for(int i = 2; i<argc; i++){
-        (url(argv[i], token));
-    }
-
     for(int i=2; i<argc;i++)
     {
         if(strcmp(argv[i], "info") == 0)

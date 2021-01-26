@@ -136,7 +136,6 @@ odp *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }
 
-//field *alloc(field * ala);
 
 /*field *parameters(const char * const korzen, char *komenda)
 {
