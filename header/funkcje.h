@@ -37,7 +37,7 @@ char swiat[MAX][MAX];
 // }Odp;
 
 
-field *parameters(const char * const korzen, char *komenda);
+odp *parameters(const char * const korzen, char *komenda);
 
 field *alloc(field * ala);
 
