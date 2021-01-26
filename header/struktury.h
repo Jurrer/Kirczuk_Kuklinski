@@ -3,7 +3,7 @@
 
 
 typedef struct _Odp
-{
+{   
     char *status;
     char *name;
     int current_x;
@@ -12,23 +12,31 @@ typedef struct _Odp
     char *direction;
     int step;
     char *field_type;
-    char *field_bonus;    
-    int x[3];
-    int y[3];
-    char type[200][3];
+    char *field_bonus;
 } odp;
+
+typedef struct _Expl{
+    char *status;
+    int x;
+    int y;
+    char *type;
+}expl;
 
 typedef struct _Field
 {   
-    char **mapa;
-    int now_x;
-    int now_y;
-    int d_x;
+    char **mapa;    //nasza mapka
+    int now_x;      //aktualne położenie "x"
+    int now_y;      // --||--
+    int d_x;        //delta "x", tak zwany offset
     int d_y;
-    int rozmiar_x;
-    int rozmiar_y;
-    char *dir;
-    char *field;
-} field;
+    int rozmiar_x;  //rozmiar naszej planszy
+    int rozmiar_y;  //rozmiar naszej planszy
+    char *dir;      //zwrot czołgu
+    char *komenda;
+    expl *pole1;
+    expl *pole2;
+    expl *pole3;
+    odp *response;
+}field;
 
 #endif

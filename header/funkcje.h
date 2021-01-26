@@ -36,7 +36,7 @@ typedef struct _Mapa {
 }Mapa;
 */
 
-odp *parameters(const char * const korzen, char *komenda);
+field *parameters(const char * const korzen, char *komenda);
 
 void wyzeruj();
 

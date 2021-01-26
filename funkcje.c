@@ -164,9 +164,9 @@ void zapisz()
     fclose(fin);
 }
 
-Mapa *wpisz(char *response, char *komenda)
+odp *wpisz(char *response, char *komenda)
 {
-    Mapa * odpowiedz = (Mapa*) malloc(sizeof(Mapa));
+    odp * odpowiedz = (odp*) malloc(sizeof(odp));
     if(strcmp(komenda, "explore")==0){
     odpowiedz = parameters(response, komenda);
         if(strcmp(odpowiedz->type1, "\"wall\"") == 0){
