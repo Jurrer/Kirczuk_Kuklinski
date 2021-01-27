@@ -7,7 +7,7 @@ all:kompiluj
 
 kompiluj: $(DEPS)
 	cc main_auto.o komunikacja.o funkcje.o automat.o -o main_auto.a -lcurl ../cJSON/cJSON.o
-	valgrind ./main_auto.a qwerty_18
+	./main_auto.a qwerty_18
 
 komp: $(DEPS)
 	cc main.o komunikacja.o funkcje.o automat.o -o main.a -lcurl ../cJSON/cJSON.o
