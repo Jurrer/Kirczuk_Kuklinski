@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     odp *m = (odp*) malloc(sizeof(odp));
     wyzeruj();
     
-    const char *token;;
+    const char *token;
     system("clear");
     printf("Wpisz token swojego świata\n");
 
