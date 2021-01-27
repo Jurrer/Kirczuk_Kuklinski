@@ -13,14 +13,14 @@ void wypisz(){
     ;
 }
 
-void let_go_map(field *maaaapaaa){
+void let_go_map(field *map){
     
-    for(int i = 0; i < maaaapaaa->rozmiar_x; i++)
+    for(int i = 0; i < map->rozmiar_x; i++)
     {
-        free(maaaapaaa->mapa[i]);
+        free(map->mapa[i]);
     }
-    free(maaaapaaa->mapa);
-    free(maaaapaaa);
+    free(map->mapa);
+    free(map);
 }
 
 
