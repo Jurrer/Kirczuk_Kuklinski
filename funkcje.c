@@ -302,7 +302,7 @@ void wpisz(char *response, char *komenda) //przypisuje elementy otoczenia do św
     if (strcmp(komenda, "explore") == 0)
     {
         odpowiedz = parameters(response, komenda);
-        if (odpowiedz->x1 >= 0 && odpowiedz->x2 >= 0 && odpowiedz->x3 >= 0 && odpowiedz->y1 >= 0 && odpowiedz->y2 >= 0 && odpowiedz->y3 >= 0)
+        if (odpowiedz->x1 >= 0 && odpowiedz->x2 >= 0 && odpowiedz->x3 >= 0 && odpowiedz->y1 >= 0 && odpowiedz->y2 >= 0 && odpowiedz->y3 >= 0 && odpowiedz->x1 <MAX  && odpowiedz->x2 <MAX && odpowiedz->x3 <MAX && odpowiedz->y1 <MAX && odpowiedz->y2 <MAX && odpowiedz->y3 <MAX)
         {
             if (strcmp(odpowiedz->type1, "\"wall\"") == 0)
             {
@@ -347,7 +347,7 @@ void wpisz(char *response, char *komenda) //przypisuje elementy otoczenia do św
     }
     else
     {
-        if (odpowiedz->current_x >= 0 && odpowiedz->current_y >= 0)
+        if (odpowiedz->current_x >= 0 && odpowiedz->current_y >= 0 && odpowiedz->current_x <MAX && odpowiedz->current_y <MAX)
         {
             odpowiedz = parameters(response, komenda);
             if (strcmp(odpowiedz->field_type, "grass") == 0)
