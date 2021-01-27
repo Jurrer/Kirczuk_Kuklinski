@@ -14,7 +14,11 @@ typedef struct _Odp
     char *field_type;
     char *field_bonus;
     int x1, y1, x2, y2, x3, y3;
-    char *type1, *type2, *type3;
+    char *type1;
+    char *type2;
+    char *type3;
+    // int offset;
+    // int maxoffset;
 } odp;
 
 typedef struct _Expl{

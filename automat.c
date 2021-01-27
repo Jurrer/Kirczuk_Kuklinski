@@ -1,41 +1,41 @@
 #include "header/automat.h"
-//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move
-char *make_move(const char *token) 
+
+char *make_move(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move
 {
     char *odpowiedz_json = move(token);
     wpisz(odpowiedz_json, "move");
     return odpowiedz_json;
 }
-//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info
-char *make_info(const char *token) 
+
+char *make_info(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info
 {
     char *odpowiedz_json = info(token);
     wpisz(odpowiedz_json, "info");
     return odpowiedz_json;
 }
-//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left
-char *make_left(const char *token) 
+
+char *make_left(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left
 {
     char *odpowiedz_json = left(token);
     wpisz(odpowiedz_json, "left");
     return odpowiedz_json;
 }
-//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right
-char *make_right(const char *token) 
+
+char *make_right(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right
 {
     char *odpowiedz_json = right(token);
     wpisz(odpowiedz_json, "right");
     return odpowiedz_json;
 }
-//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore
-char *make_explore(const char *token) 
+
+char *make_explore(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore
 {
     char *odpowiedz_json = explore(token);
     wpisz(odpowiedz_json, "explore");
     return odpowiedz_json;
 }
-//funkcja szukająca obwiedni
-int szukaj_obwiedni(odp *m, char *odpo, const char *token) 
+
+int szukaj_obwiedni(odp *m, char *odpo, const char *token) //funkcja szukająca obwiedni
 {
     int wynik = 0;
     int l = 0;
@@ -190,7 +190,6 @@ int szukaj_granicy(odp *m, char *odpo, const char *token) //funkcja szukająca d
     while(strcmp(m->type2, "\"wall\"") != 0) //dojeżdża maksymalnie do lewej
     {
         odpo = make_move(token);
-
         odpo = make_explore(token);
         m = parameters(odpo, "explore");
     }

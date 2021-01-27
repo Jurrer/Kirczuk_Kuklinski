@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include "struktury.h"
 
-#define MAX 50
+#define MAX 15
 
 char swiat[MAX][MAX];
 

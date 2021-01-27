@@ -276,14 +276,15 @@ odp *parameters(const char * const korzen, char *komenda) //przetwarza odpowied�
 
 void narysuj_swiat() //rysuje świat
 {
+    system("clear");
     int i,j;
     for(i=0; i<MAX; i++)
     {
-    for(j=0; j<MAX; j++)
-    {
-        printf("%c", swiat[i][j]);
-    }
-    printf("\n");
+        for(j=0; j<MAX; j++)
+        {
+            printf("%c", swiat[i][j]);
+        }
+        printf("\n");
     }
 }
 
@@ -291,9 +292,9 @@ void zapisz() //zapisuje świat do pliku
 {
     FILE *fin;
     fin = fopen("save.txt", "w");
-    for(int i=0; i<50; i++)
+    for(int i=0; i<MAX; i++)
     {
-        for(int j =0; j<50;j++)
+        for(int j =0; j<MAX;j++)
         {
             fprintf(fin, "%c", swiat[i][j]);
         }
@@ -354,9 +355,9 @@ void wpisz(char *response, char *komenda) //przypisuje elementy otoczenia do św
 void wyzeruj() //tworzy czystą planszę
 {
     int i,j;
-    for(i=0; i<50; i++)
+    for(i=0; i<MAX; i++)
     {
-        for(j=0; j<50; j++)
+        for(j=0; j<MAX; j++)
         {
             swiat[i][j] = '+';
         }
