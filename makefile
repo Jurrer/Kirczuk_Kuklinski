@@ -1,16 +1,28 @@
 DEPS= main_auto.o komunikacja.o funkcje.o automat.o main.o
 
-all:kompiluj
+#komenda 'make memtest1' i 'make memtest2' przetestuje wycieki pamieci naszych programów
+
+all:kompiluj auto
 
 %.o:%.c
 	cc -c $^ -o $@
 
 kompiluj: $(DEPS)
 	cc main_auto.o komunikacja.o funkcje.o automat.o -o main_auto.a -lcurl ../cJSON/cJSON.o
-	./main_auto.a
 
 komp: $(DEPS)
 	cc main.o komunikacja.o funkcje.o automat.o -o main.a -lcurl ../cJSON/cJSON.o
+
+auto:
+	./main_auto.a
+
+main:duzo
+
+memtest1:kompiluj
+	valgrind ./main_auto.a
+
+memtest2:komp
+	valgrind ./main.a qwerty_16 info
 
 lewo:komp
 	./main.a qwerty_16 left 
@@ -35,11 +47,4 @@ clean:
 	rm -f *.o
 	rm -f test/*.a
 	rm -f test/*.o
-
-auto:kompiluj
-	./main_auto.a
-
-map:test/mapa_t.o
-	cc test/mapa_t.o -o test/mapa_t.a ../cJSON/cJSON.o
-	./test/mapa_t.a
 	
