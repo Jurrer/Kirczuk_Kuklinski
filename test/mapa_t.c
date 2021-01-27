@@ -136,5 +136,5 @@ field * resize(field * info, field * map, int offsetx, int offsety){
 void main(int argc, char **argv)
 {
     field * struktura_gry = do_map(10, 10);
-    void wypisz(struktura_gry);
+    wypisz(struktura_gry);
 }

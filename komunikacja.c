@@ -34,13 +34,14 @@ static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
     return realsize;
 }
 
-char *make_request(char *url)
+char *make_request(char *url) //wysyłą zapytanie na serwer i zwraca odpowiedź
 {
     CURL *curl;
     CURLcode res;
     Memory chunk;
     chunk.size = 0;
     chunk.response = NULL;
+    char *bufor = (char*) malloc(sizeof(char)*2048);
 
     curl = curl_easy_init();
     if (curl) {
@@ -66,12 +67,14 @@ char *make_request(char *url)
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
         /* zawsze po sobie sprzątaj */
-        //free(chunk.response);
-        printf("%s", chunk.response);
+        strcpy(bufor, chunk.response);
+        printf("%s", bufor);
         curl_easy_cleanup(curl);
+        free(chunk.response);
     }
-    return chunk.response;
+    return bufor;
 }
+
 /*
 char *url(char * action, const char *token)
 {
@@ -102,28 +105,29 @@ char *url(char * action, const char *token)
         }   
 }
 */
-char *info(const char *token) {
+
+char *info(const char *token) { //wywołanie make_request dla info
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/info/";
     strcat(url, token);
     char *response_json = make_request(url);
     return response_json;
 }
 
-char *move(const char *token) {
+char *move(const char *token) { //wywołanie make_request dla move
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/move/";
     strcat(url, token);
     char *response_json = make_request(url);
     return response_json;
 }
 
-char *explore(const char *token) {
+char *explore(const char *token) { //wywołanie make_request dla explore
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/explore/";
     strcat(url, token);
     char *response_json = make_request(url);
     return response_json;
 }
 
-char *left(const char *token) {
+char *left(const char *token) { //wywołanie make_request dla left
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
     strcat(url, "/left");
@@ -131,7 +135,7 @@ char *left(const char *token) {
     return response_json;
 }
 
-char *right(const char *token) {
+char *right(const char *token) { //wywołanie make_request dla right
     char url[100] = "http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/rotate/";
     strcat(url, token);
     strcat(url, "/right");

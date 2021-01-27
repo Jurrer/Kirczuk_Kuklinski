@@ -16,8 +16,8 @@ int main(int argc, char **argv)
     int obw = 0; //zmienna definiująca czy znalezliśmy obwiednię
 
     obw = szukaj_obwiedni(m, odpo, token);
-
     //obw = szukaj_granicy(m, odpo, token);
+    //obw = czysc_mape(m, odpo, token);
 
     printf("%d\n", obw);
 

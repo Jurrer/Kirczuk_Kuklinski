@@ -1,7 +1,7 @@
 #include "header/funkcje.h"
 
 
-odp *parameters(const char * const korzen, char *komenda)
+odp *parameters(const char * const korzen, char *komenda) //przetwarza odpowiedź z serwera
 {
     odp *zodiak = (odp*) malloc(sizeof(odp));
     const cJSON *status = NULL;
@@ -136,8 +136,7 @@ odp *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }
 
-
-/*field *parameters(const char * const korzen, char *komenda)
+/*field *parameters(const char * const korzen, char *komenda) //przetwarza odpowiedź z serwera do innej struktury (nie działa)
 {
     field *zodiak = (field*) malloc(sizeof(field));
 
@@ -258,7 +257,7 @@ odp *parameters(const char * const korzen, char *komenda)
     return zodiak;
 }*/
 
-// field *alloc(field * ala){
+// field *alloc(field * ala){ //alokuje pamięć dla struktury (nie działa)
 //     ala = (field*) malloc(sizeof(field)*2);
 //     ala->response = (odp*) malloc(sizeof(odp)*2);
 //     ala->pole[0] = (expl*) malloc(sizeof(expl)*2);
@@ -267,7 +266,7 @@ odp *parameters(const char * const korzen, char *komenda)
 //     return ala;
 // }
 
-// void freeee(field *alama){
+// void freeee(field *alama){ //zwalnia pamięć dla struktury (nie działa)
 //     free(alama->pole[0]);
 //     free(alama->pole[1]);
 //     free(alama->pole[2]);
@@ -275,7 +274,7 @@ odp *parameters(const char * const korzen, char *komenda)
 //     free(alama);
 // }
 
-void narysuj_swiat()
+void narysuj_swiat() //rysuje świat
 {
     int i,j;
     for(i=0; i<MAX; i++)
@@ -288,7 +287,7 @@ void narysuj_swiat()
     }
 }
 
-void zapisz()
+void zapisz() //zapisuje świat do pliku
 {
     FILE *fin;
     fin = fopen("save.txt", "w");
@@ -303,7 +302,7 @@ void zapisz()
     fclose(fin);
 }
 
-void wpisz(char *response, char *komenda)
+void wpisz(char *response, char *komenda) //przypisuje elementy otoczenia do świata
 {
     odp * odpowiedz = (odp*) malloc(sizeof(odp));
     if(strcmp(komenda, "explore")==0){
@@ -352,7 +351,7 @@ void wpisz(char *response, char *komenda)
     free(odpowiedz);
 }
 
-void wyzeruj()
+void wyzeruj() //tworzy czystą planszę
 {
     int i,j;
     for(i=0; i<50; i++)

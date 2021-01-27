@@ -1,41 +1,41 @@
 #include "header/automat.h"
 
-char *make_move(const char *token)
+char *make_move(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move
 {
     char *odpowiedz_json = move(token);
     wpisz(odpowiedz_json, "move");
     return odpowiedz_json;
 }
 
-char *make_info(const char *token)
+char *make_info(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info
 {
     char *odpowiedz_json = info(token);
     wpisz(odpowiedz_json, "info");
     return odpowiedz_json;
 }
 
-char *make_left(const char *token)
+char *make_left(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left
 {
     char *odpowiedz_json = left(token);
     wpisz(odpowiedz_json, "left");
     return odpowiedz_json;
 }
 
-char *make_right(const char *token)
+char *make_right(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right
 {
     char *odpowiedz_json = right(token);
     wpisz(odpowiedz_json, "right");
     return odpowiedz_json;
 }
 
-char *make_explore(const char *token)
+char *make_explore(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore
 {
     char *odpowiedz_json = explore(token);
     wpisz(odpowiedz_json, "explore");
     return odpowiedz_json;
 }
 
-int szukaj_obwiedni(odp *m, char *odpo, const char *token)
+int szukaj_obwiedni(odp *m, char *odpo, const char *token) //funkcja szukająca obwiedni
 {
     int wynik = 0;
     int l = 0;
@@ -53,7 +53,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
     odpo = make_explore(token);
     m = parameters(odpo, "explore");
 
-    while(strcmp(m->type2, "\"wall\"") != 0)
+    while(strcmp(m->type2, "\"wall\"") != 0) //czołg dojeżdża do ściany
     {        
         odpo = make_move(token);
 
@@ -65,7 +65,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
     odpo = make_explore(token);
     m = parameters(odpo, "explore");
 
-    if((strcmp(m->type2, "\"wall\"") == 0))
+    if((strcmp(m->type2, "\"wall\"") == 0)) //sprawdza czy dojechał do rogu
     {
         r++;
     }
@@ -78,11 +78,11 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
     odpo = make_right(token);
     m = parameters(odpo, "right");
 
-    x_poczatkowe = m->current_x;
+    x_poczatkowe = m->current_x; //zapisuje współrzędne startowe szukania
     y_poczatkowe = m->current_y;
 
 
-    while(m->current_x != x_poczatkowe || m->current_y != y_poczatkowe || ruszyl == 0)
+    while(m->current_x != x_poczatkowe || m->current_y != y_poczatkowe || ruszyl == 0) //główna pętla
     {
         ruszyl = 1;
         
@@ -94,7 +94,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
         odpo = make_explore(token);
         m = parameters(odpo, "explore");
         
-        if(strcmp(dir, "E") == 0 || strcmp(dir, "W") == 0)
+        if(strcmp(dir, "E") == 0 || strcmp(dir, "W") == 0) //ujednolica numerację typów podłoża odkrywanych przez explore
         {
             strcpy(pom1, m->type1);
             strcpy(pom2, m->type3);
@@ -104,7 +104,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
         }
         else;
 
-        if((strcmp(m->type3, "\"wall\"") != 0) && (strcmp(m->type2, "\"wall\"") != 0))
+        if((strcmp(m->type3, "\"wall\"") != 0) && (strcmp(m->type2, "\"wall\"") != 0)) //sprawdza czy może skręcić w lewo
         {
             odpo = make_move(token);
 
@@ -112,11 +112,11 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
 
             l++;
         }
-        else if((strcmp(m->type2, "\"wall\"") != 0))
+        else if((strcmp(m->type2, "\"wall\"") != 0)) //sprawdza czy może jechać do przodu
         {
             odpo = make_move(token);
         }
-        else if((strcmp(m->type2, "\"wall\"") == 0))
+        else if((strcmp(m->type2, "\"wall\"") == 0)) //skręca w prawo jeśli się zblokował
         {
             odpo = make_right(token);
 
@@ -131,7 +131,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
     odpo = make_info(token);
     m = parameters(odpo, "info");
 
-    if(strcmp(m->direction, dir_poczatkowe) == 0)
+    if(strcmp(m->direction, dir_poczatkowe) == 0) // zabezpieczenie przed okrążaniem tego samego obiektu kilkukrotnie
     {
         odpo = make_left(token);
         
@@ -148,7 +148,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
 
     wynik = r-l;
 
-    if(wynik == 4)
+    if(wynik == 4) //jeśli znalazł obwiednię to funkcja się kończy, a jeżeli nie to funkcja wywołuje się rekurencyjnie
         return wynik;
 
     else
@@ -157,7 +157,7 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token)
     return wynik;
 }
 
-int szukaj_granicy(odp *m, char *odpo, const char *token)
+int szukaj_granicy(odp *m, char *odpo, const char *token) //funkcja szukająca dolnej granicy planszy
 {
     int wynik = 0;
     
@@ -201,7 +201,7 @@ int szukaj_granicy(odp *m, char *odpo, const char *token)
     odpo = make_explore(token);
     m = parameters(odpo, "explore");
 
-    if(strcmp(m->type2, "\"wall\"") != 0) //sprawdza czy pod nim nie ma przejazdu
+    if(strcmp(m->type2, "\"wall\"") != 0) //sprawdza czy pod nim nie ma przejazdu, jeżeli jest to wywołuje się rekurencyjnie
     {
         wynik = szukaj_granicy(m, odpo, token);
         return wynik;
@@ -253,9 +253,88 @@ int szukaj_granicy(odp *m, char *odpo, const char *token)
 
 }
 
-int odkrywanie_mapy(odp *m, char *odpo, const char *token)
+int czysc_mape(odp *m, char *odpo, const char *token)
 {
-    int dolna_granica = 0;
+    int i = 0;
+    int wynik = 0;
+    
+    odpo = make_info(token);
+    m = parameters(odpo, "info");
 
-    dolna_granica = szukaj_granicy(m, odpo, token);
+    while(strcmp(m->direction, "E") !=0 )
+    {
+        odpo = make_left(token);
+        m = parameters(odpo, "left");
+    }
+
+    for(i = 0; i<25; i++)
+    {
+        odpo = make_explore(token);
+        m = parameters(odpo, "explore");
+        
+        while(strcmp(m->type2, "\"wall\"") != 0)
+        {
+            odpo = make_move(token);
+
+            odpo = make_explore(token);
+            m = parameters(odpo, "explore");
+        }
+        
+        odpo = make_left(token);
+
+        odpo = make_explore(token);
+        m = parameters(odpo, "explore");
+
+        if(strcmp(m->type1, "\"wall\"") != 0 && strcmp(m->type2, "\"wall\"") != 0)
+        {
+            odpo = make_move(token);
+            odpo = make_right(token);
+    
+            wynik = czysc_mape(m, odpo, token);
+            return wynik;
+        }
+
+        odpo = make_move(token);
+        odpo = make_left(token);
+        odpo = make_explore(token);
+        m = parameters(odpo, "explore");
+
+        while(strcmp(m->type2, "\"wall\"") != 0)
+        {
+            odpo = make_move(token);
+
+            odpo = make_explore(token);
+            m = parameters(odpo, "explore");
+        }
+
+        odpo = make_right(token);
+        odpo = make_explore(token);
+        m = parameters(odpo, "explore");
+
+        if(strcmp(m->type3, "\"wall\"") != 0 && strcmp(m->type2, "\"wall\"") != 0)
+        {
+            odpo = make_move(token);
+            odpo = make_left(token);
+            odpo = make_explore(token);
+            m = parameters(odpo, "explore");
+
+            while(strcmp(m->type2, "\"wall\"") != 0)
+            {
+                odpo = make_move(token);
+
+                odpo = make_explore(token);
+                m = parameters(odpo, "explore");
+            }
+
+            wynik = czysc_mape(m, odpo, token);
+            return wynik;
+        }
+
+        odpo = make_move(token);
+        odpo = make_right(token);
+
+    }
+    wynik = 1;
+
+    return wynik;
 }
