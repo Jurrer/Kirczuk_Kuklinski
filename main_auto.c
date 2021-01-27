@@ -25,8 +25,10 @@ int main(int argc, char **argv)
     printf("Szukam obwiedni\n");
     obw = szukaj_obwiedni(m, odpo, token);
     printf("Znalazłem obwiednię!\nSzukam dolnej granicy\n");
+    zapisz();
     obw = szukaj_granicy(m, odpo, token);
     printf("Znalazłem dolną granicę\nPrzeczesuję mapę\n");
+    zapisz();
     obw = czysc_mape(m, odpo, token);
 
     odpo = make_info(token);
