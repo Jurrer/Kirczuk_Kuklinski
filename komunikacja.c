@@ -68,7 +68,7 @@ char *make_request(char *url) //wysyłą zapytanie na serwer i zwraca odpowiedź
         }
         /* zawsze po sobie sprzątaj */
         strcpy(bufor, chunk.response);
-        printf("%s", bufor);
+        //printf("%s", bufor);
         curl_easy_cleanup(curl);
         free(chunk.response);
     }

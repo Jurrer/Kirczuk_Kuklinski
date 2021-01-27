@@ -22,16 +22,17 @@ int main(int argc, char **argv)
 
     int obw = 0; //zmienna definiująca czy znalezliśmy obwiednię
 
+    printf("Szukam obwiedni\n");
     obw = szukaj_obwiedni(m, odpo, token);
-    printf("Znalazłem obwiednię!\n");
+    printf("Znalazłem obwiednię!\nSzukam dolnej granicy\n");
     obw = szukaj_granicy(m, odpo, token);
-    printf("Znalazłem dolną granicę\n");
+    printf("Znalazłem dolną granicę\nPrzeczesuję mapę\n");
     obw = czysc_mape(m, odpo, token);
 
-    printf("%d\n", obw);
-
-
-    printf("Odkryłem całą mapę w %d krokach\n", m->step);
+    odpo = make_info(token);
+    m = parameters(odpo, "info");
+    
+    printf("Odkryłem całą mapę (mam nadzieję) w %d krokach\n", m->step);
 
     
 

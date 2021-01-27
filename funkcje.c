@@ -307,47 +307,55 @@ void wpisz(char *response, char *komenda) //przypisuje elementy otoczenia do św
 {
     odp * odpowiedz = (odp*) malloc(sizeof(odp));
     if(strcmp(komenda, "explore")==0){
-    odpowiedz = parameters(response, komenda);
-        if(strcmp(odpowiedz->type1, "\"wall\"") == 0){
-            swiat[odpowiedz->x1][odpowiedz->y1] = 'X';
-        }
-        if(strcmp(odpowiedz->type1, "\"grass\"") == 0){
-            swiat[odpowiedz->x1][odpowiedz->y1] = 'g';
-        }
-        if(strcmp(odpowiedz->type1, "\"sand\"") == 0){
-            swiat[odpowiedz->x1][odpowiedz->y1] = 's';
-        }
-        if(strcmp(odpowiedz->type2, "\"wall\"") == 0){
-            swiat[odpowiedz->x2][odpowiedz->y2] = 'X';
-        }
-        if(strcmp(odpowiedz->type2, "\"grass\"") == 0){
-            swiat[odpowiedz->x2][odpowiedz->y2] = 'g';
-        }
-        if(strcmp(odpowiedz->type2, "\"sand\"") == 0){
-            swiat[odpowiedz->x2][odpowiedz->y2] = 's';
-        }
+        odpowiedz = parameters(response, komenda);
+        if(odpowiedz->x1 >= 0 && odpowiedz->x2 >= 0 && odpowiedz->x3 >= 0 && odpowiedz->y1 >= 0 && odpowiedz->y2 >= 0 && odpowiedz->y3 >= 0)
+        {
+            if(strcmp(odpowiedz->type1, "\"wall\"") == 0){
+                swiat[odpowiedz->x1][odpowiedz->y1] = 'X';
+            }
+            if(strcmp(odpowiedz->type1, "\"grass\"") == 0){
+                swiat[odpowiedz->x1][odpowiedz->y1] = 'g';
+            }
+            if(strcmp(odpowiedz->type1, "\"sand\"") == 0){
+                swiat[odpowiedz->x1][odpowiedz->y1] = 's';
+            }
+            if(strcmp(odpowiedz->type2, "\"wall\"") == 0){
+                swiat[odpowiedz->x2][odpowiedz->y2] = 'X';
+            }
+            if(strcmp(odpowiedz->type2, "\"grass\"") == 0){
+                swiat[odpowiedz->x2][odpowiedz->y2] = 'g';
+            }
+            if(strcmp(odpowiedz->type2, "\"sand\"") == 0){
+                swiat[odpowiedz->x2][odpowiedz->y2] = 's';
+            }
 
-        if(strcmp(odpowiedz->type3, "\"wall\"") == 0){
-            swiat[odpowiedz->x3][odpowiedz->y3] = 'X';
+            if(strcmp(odpowiedz->type3, "\"wall\"") == 0){
+                swiat[odpowiedz->x3][odpowiedz->y3] = 'X';
+            }
+            if(strcmp(odpowiedz->type3, "\"grass\"") == 0){
+                swiat[odpowiedz->x3][odpowiedz->y3] = 'g';
+            }
+            if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
+                swiat[odpowiedz->x3][odpowiedz->y3] = 's';
+            }
         }
-        if(strcmp(odpowiedz->type3, "\"grass\"") == 0){
-            swiat[odpowiedz->x3][odpowiedz->y3] = 'g';
-        }
-        if(strcmp(odpowiedz->type3, "\"sand\"") == 0){
-            swiat[odpowiedz->x3][odpowiedz->y3] = 's';
-        }
+        else;
     }
     else
     {
-        odpowiedz = parameters(response, komenda);
-        if(strcmp(odpowiedz->field_type, "grass") == 0)
+        if(odpowiedz->current_x >= 0 && odpowiedz->current_y >= 0)
         {
-            swiat[odpowiedz->current_x][odpowiedz->current_y] = 'g';
+            odpowiedz = parameters(response, komenda);
+            if(strcmp(odpowiedz->field_type, "grass") == 0)
+            {
+                swiat[odpowiedz->current_x][odpowiedz->current_y] = 'g';
+            }
+            if(strcmp(odpowiedz->field_type, "sand") == 0)
+            {
+                swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
+            }
         }
-        if(strcmp(odpowiedz->field_type, "sand") == 0)
-        {
-            swiat[odpowiedz->current_x][odpowiedz->current_y] = 's';
-        }
+        else;
     }
     free(odpowiedz);
 }
