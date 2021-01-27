@@ -1,6 +1,7 @@
 #include "header/automat.h"
 
-char *make_move(char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move
+/*funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move*/
+char *make_move(char *token)
 {
 
     char *odpowiedz_json = move(token);
@@ -9,35 +10,39 @@ char *make_move(char *token) //funkcja scalająca wysłanie zapytania oraz otrzy
     return odpowiedz_json;
 }
 
-char *make_info(char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info
+/*funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info*/
+char *make_info(char *token)
 {
     char *odpowiedz_json = info(token);
     wpisz(odpowiedz_json, "info");
     return odpowiedz_json;
 }
 
-char *make_left(char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left
+/*funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left*/
+char *make_left(char *token)
 {
     char *odpowiedz_json = left(token);
     wpisz(odpowiedz_json, "left");
     return odpowiedz_json;
 }
-
-char *make_right(char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right
+/*funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right*/
+char *make_right(char *token) 
 {
     char *odpowiedz_json = right(token);
     wpisz(odpowiedz_json, "right");
     return odpowiedz_json;
 }
-
-char *make_explore(char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore
+/*funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore*/
+char *make_explore(char *token) //
 {
     char *odpowiedz_json = explore(token);
     wpisz(odpowiedz_json, "explore");
     return odpowiedz_json;
 }
 
-int szukaj_obwiedni(odp *m, char *odpo, char *token) //funkcja szukająca obwiedni
+
+/*funkcja szukająca obwiedni*/
+int szukaj_obwiedni(odp *m, char *odpo, char *token)
 {
     int wynik = 0;
     int l = 0;
@@ -161,8 +166,8 @@ int szukaj_obwiedni(odp *m, char *odpo, char *token) //funkcja szukająca obwied
     return wynik;
 }
 
-int szukaj_granicy(odp *m, char *odpo,  char *token) //funkcja szukająca dolnej granicy planszy
-{
+/*funkcja szukająca dolnej granicy planszy*/
+int szukaj_granicy(odp *m, char *odpo,  char *token) {
     int wynik = 0;
 
     odpo = make_info(token);
@@ -252,6 +257,8 @@ int szukaj_granicy(odp *m, char *odpo,  char *token) //funkcja szukająca dolnej
     return 1;
 }
 
+
+/*odkrywa mape poziomo*/
 int czysc_mape(odp *m, char *odpo, char *token)
 {
     int i = 0;
