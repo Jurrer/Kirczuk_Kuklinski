@@ -146,7 +146,7 @@ void freeee(field *alama)
     free(alama);
 }
 
-void main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
     char buffer[2048];
@@ -184,4 +184,5 @@ void main(int argc, char **argv)
             }
         }
     }
+    return 0;
 }
