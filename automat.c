@@ -1,41 +1,41 @@
 #include "header/automat.h"
-
-char *make_move(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move
+//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla move
+char *make_move(const char *token) 
 {
     char *odpowiedz_json = move(token);
     wpisz(odpowiedz_json, "move");
     return odpowiedz_json;
 }
-
-char *make_info(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info
+//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla info
+char *make_info(const char *token) 
 {
     char *odpowiedz_json = info(token);
     wpisz(odpowiedz_json, "info");
     return odpowiedz_json;
 }
-
-char *make_left(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left
+//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla left
+char *make_left(const char *token) 
 {
     char *odpowiedz_json = left(token);
     wpisz(odpowiedz_json, "left");
     return odpowiedz_json;
 }
-
-char *make_right(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right
+//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla right
+char *make_right(const char *token) 
 {
     char *odpowiedz_json = right(token);
     wpisz(odpowiedz_json, "right");
     return odpowiedz_json;
 }
-
-char *make_explore(const char *token) //funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore
+//funkcja scalająca wysłanie zapytania oraz otrzymanie odpowiedzi dla explore
+char *make_explore(const char *token) 
 {
     char *odpowiedz_json = explore(token);
     wpisz(odpowiedz_json, "explore");
     return odpowiedz_json;
 }
-
-int szukaj_obwiedni(odp *m, char *odpo, const char *token) //funkcja szukająca obwiedni
+//funkcja szukająca obwiedni
+int szukaj_obwiedni(odp *m, char *odpo, const char *token) 
 {
     int wynik = 0;
     int l = 0;
