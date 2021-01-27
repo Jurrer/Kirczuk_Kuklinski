@@ -23,6 +23,6 @@ int szukaj_obwiedni(odp *m, char *odpo, const char *token);
 
 int szukaj_granicy(odp *m, char *odpo, const char *token);
 
-int odkrywanie_mapy(odp *m, char *odpo, const char *token);
+int czysc_mape(odp *m, char *odpo, const char *token);
 
 #endif
