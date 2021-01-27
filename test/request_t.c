@@ -7,20 +7,23 @@ static size_t write_callback(void *data, size_t size, size_t nmemb, void *userp)
     size_t realsize = size * nmemb;
 
     /* jawnie konwertujemy (void*) na naszą strukturę, bo wiemy, że będziemy ją tutaj otrzymywać */
-    Memory *mem = (Memory*) userp;
+    Memory *mem = (Memory *)userp;
 
     char *ptr = NULL;
 
     /* Sprawdzamy czy pierwszy raz wywołujemy funkcję i trzeba zaalokować pamięć po raz pierwszy,
     czy trzeba zrobić reallokację (która kopiuje automatycznie starą zawartość w nowe miejsce) */
-    if (mem->response != NULL) {
+    if (mem->response != NULL)
+    {
         ptr = realloc(mem->response, mem->size + realsize + 1);
     }
-    else {
-        ptr = malloc(mem->size + realsize + 1);        
+    else
+    {
+        ptr = malloc(mem->size + realsize + 1);
     }
 
-    if (ptr == NULL) {
+    if (ptr == NULL)
+    {
         return 0;
     }
     /* brak pamięci! */
@@ -44,7 +47,8 @@ char *make_request(char *url)
     chunk.response = NULL;
 
     curl = curl_easy_init();
-    if (curl) {
+    if (curl)
+    {
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         // curl_easy_setopt(curl, CURLOPT_HEADER, 1L);
@@ -56,14 +60,15 @@ char *make_request(char *url)
 
         /* to jest adress struktury, który będzie przekazywany do naszej funkcji 'callback',
        do tej struktury nasz funkcja 'callback' będzie dopisywać wynik */
-        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void*)&chunk);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, (void *)&chunk);
 
         /* Wykonaj zapytanie 'synchronicznie', to znaczy następna linijka kodu nie wykona się
        dopóki nie nadejdzie odpowiedź z serwera. */
         res = curl_easy_perform(curl);
 
         /* Sprawdzamy czy wystapił jakis błąd? */
-        if (res != CURLE_OK) {
+        if (res != CURLE_OK)
+        {
             fprintf(stderr, "Błąd! curl_easy_perform() niepowodzenie: %s\n", curl_easy_strerror(res));
         }
 
@@ -76,86 +81,41 @@ char *make_request(char *url)
 }
 
 char* concat(const char *s1, const char *s2)
-{
-    char *result = malloc(strlen(s1) + strlen(s2) + 1); // +1 for the null-terminator
-    // in real code you would check for errors in malloc here
+{   
+    char *result = malloc(strlen(s1) + strlen(s2) + 1);
     strcpy(result, s1);
     strcat(result, s2);
     return result;
 }
 
-
-char *url(const char * token, const char * action){
+char *url(char * token, const char * action){
 
     char *url = {"http://edi.iem.pw.edu.pl:30000/worlds/api/v1/worlds/"};
     char * wynik;
     char * nazwa;
 
-    if(!strcmp(action, "info") || !strcmp(action, "move") || !strcmp(action, "explore")){
 
-        nazwa = concat(url, token);
-        concat(nazwa, "/");
-        //strcat(nazwa, action);
-        //strcat(nazwa, "right");
+    if(!strcmp(action, "info") || !strcmp(action, "move") || !strcmp(action, "explore")){
+        
+        nazwa = concat(url, action);
+        nazwa = concat(nazwa, "/");        
+        nazwa = concat(nazwa, token);
     }
     if(!strcmp(action, "left") || !strcmp(action, "right")){
         
-        //strcat(nazwa, "rotate/");
-        //strcat(nazwa, token);
-        //strcat(nazwa, "/");
-        //strcat(nazwa, action);
+        nazwa = concat(url, "rotate");
+        nazwa = concat(nazwa, "/");        
+        nazwa = concat(nazwa, token);
+        nazwa = concat(nazwa, "/");   
+        nazwa = concat(nazwa, action);        
     }
     return nazwa;
 }
 
 void main(int argc, char ** argv){  
-    char *a = url(argv[1], argv[2]);
-
-    printf("%s\n", a);
-
+    
     for(int i = 2; i<argc; i++){
-
-            
-            //char * buffer[2048] = make_request(url(argv[1], argv[2]));
-
-            }
+        char * buffer = make_request(url(argv[1], argv[i]));
+        printf("\n%s\n", buffer);
+    }
 }
-
-
-// //////////////////////////
-//     for(int i=2; i<argc;i++)
-//     {
-//         if(strcmp(argv[i], "info") == 0)
-//         {
-//             char *odpowiedz_json = info(token);
-//             wpisz(odpowiedz_json, "info");
-//         }
-//         if(strcmp(argv[i], "explore") == 0)
-//         {
-//             char *odpowiedz_json = explore(token);
-//             wpisz(odpowiedz_json, "explore");
-//         }
-//         if(strcmp(argv[i], "right") == 0)
-//         {
-//             char *odpowiedz_json = right(token);
-//             wpisz(odpowiedz_json, "right");
-//         }
-//         if(strcmp(argv[i], "move") == 0)
-//         {
-//             char *odpowiedz_json = move(token);
-//             wpisz(odpowiedz_json, "move");
-//         }
-//         if(strcmp(argv[i], "left") == 0)
-//         {
-//             char *odpowiedz_json = left(token);
-//             wpisz(odpowiedz_json, "left");
-//         }
-//         if(i == (argc-1))
-//         {
-//             narysuj_swiat();
-//         }
-//     }
-
-//     zapisz();
-
-//     return 0;
