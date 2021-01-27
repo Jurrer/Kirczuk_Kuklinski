@@ -9,20 +9,20 @@
 #include "komunikacja.h"
 #include "funkcje.h"
 
-char *make_move(const char *token);
+char *make_move(char *token);
 
-char *make_info(const char *token);
+char *make_info(char *token);
 
-char *make_left(const char *token);
+char *make_left(char *token);
 
-char *make_right(const char *token);
+char *make_right(char *token);
 
-char *make_explore(const char *token);
+char *make_explore(char *token);
 
-int szukaj_obwiedni(odp *m, char *odpo, const char *token);
+int szukaj_obwiedni(odp *m, char *odpo, char *token);
 
-int szukaj_granicy(odp *m, char *odpo, const char *token);
+int szukaj_granicy(odp *m, char *odpo, char *token);
 
-int czysc_mape(odp *m, char *odpo, const char *token);
+int czysc_mape(odp *m, char *odpo, char *token);
 
 #endif

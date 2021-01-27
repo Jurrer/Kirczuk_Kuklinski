@@ -1,4 +1,4 @@
-DEPS= main_auto.o komunikacja.o funkcje.o automat.o
+DEPS= main_auto.o komunikacja.o funkcje.o automat.o main.o
 
 all:kompiluj
 

@@ -7,12 +7,11 @@
 
 int main(int argc, char **argv)
 {
-    
 
-    odp *m = (odp*) malloc(sizeof(odp));
+    odp *m = (odp *)malloc(sizeof(odp));
     wyzeruj();
-    
-    const char *token;
+
+    char *token;
     system("clear");
     printf("Wpisz token swojego świata\n");
 
@@ -23,20 +22,20 @@ int main(int argc, char **argv)
     int obw = 0; //zmienna definiująca czy znalezliśmy obwiednię
 
     printf("Szukam obwiedni\n");
+    
     obw = szukaj_obwiedni(m, odpo, token);
     printf("Znalazłem obwiednię!\nSzukam dolnej granicy\n");
-    zapisz();
+    zapisz();    
     obw = szukaj_granicy(m, odpo, token);
     printf("Znalazłem dolną granicę\nPrzeczesuję mapę\n");
-    zapisz();
+    zapisz();    
     obw = czysc_mape(m, odpo, token);
 
     odpo = make_info(token);
     m = parameters(odpo, "info");
-    
-    printf("Odkryłem całą mapę (mam nadzieję) w %d krokach\n", m->step);
+    narysuj_swiat();
 
-    
+    printf("Odkryłem całą mapę (mam nadzieję) w %d krokach\n", m->step);
 
     zapisz();
 
